@@ -42,14 +42,14 @@ Para enviar mensagens através do webhook, precisamos "iniciar" nosso bot para q
 Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com um internet gateway conectado à uma das sub-redes públicas.
 
 - Após logar no console AWS, selecione VPC (ou digite na barra de busca).
-![alt text](<1 Dashboard.png>)
+[1 Dashboard.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/1%20Dashboard.png)
 
 - Clique em *Create VPC*
-![alt text](<2 VPC.png>)
+[2 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2%20VPC.png)
 
 - Aplique as configurações abaixo e clique em *Create VPC*
-![alt text](<2.1 VPC.png>)
-![alt text](<2.2 VPC.png>)
+[2.1 VPC.pn](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.1%20VPC.png)
+[2.2 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.2%20VPC.png)
 - Se as configurações estiverem corretas, o fluxo ser similar à esse:
 ![alt text](<2.3 VPC.png>)
 
