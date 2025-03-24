@@ -48,33 +48,33 @@ Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com
 ![2 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2%20VPC.png)
 
 - Aplique as configurações abaixo e clique em *Create VPC*
-[2.1 VPC.pn](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.1%20VPC.png)
-[2.2 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.2%20VPC.png)
+![2.1 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.1%20VPC.png)
+![2.2 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.2%20VPC.png)
 - Se as configurações estiverem corretas, o fluxo ser similar à esse:
-![alt text](<2.3 VPC.png>)
+![<2.3 VPC.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.3%20VPC.png)
 
 ### Criando um Security Group
 - No dashboard, clique em EC2. Depois, na seção à esquerda, selecione *Secuity Group*
-![alt text](<3 SG.png>)
+![<3 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3%20SG.png)
 
 - Clique em *Create Security Group*
-![alt text](<3.1 SG.png>)
+![<3.1 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3.1%20SG.png)
 
 - Aplique as configurações abaixo e clique em *Create Security Group*
-![alt text](<3.2 SG.png>)
-![alt text](<3.3 SG.png>)
+![<3.2 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3.2%20SG.png))
+![<3.3 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3.3%20SG.png)
 
 ### **Criar a instância EC2**
 - Em EC2, na seção à esquerda, clique em *Instances* e depois em "Launch Instances"
-![alt text](<4 EC2.png>)
-![alt text](<4.0 EC2.png>)
+![<4 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4%20EC2.png)
+![<4.0 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.0%20EC2.png)
 
 - Aplique as configurações abaixo:
-![alt text](<4.1 EC2.png>)
-![alt text](<4.2 EC2.png>)
+![<4.1 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.1%20EC2.png)
+![<4.2 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.2%20EC2.png)
 
 - Para criar um "Key Pair", faça:
-![alt text](<4.3 EC2.png>)
+![<4.3 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.3%20EC2.png)
 
 - Após a criação, a chave será baixada automaticamente para sua máquina. É importante mantê-la disponível no momento da conexão com a instância. Se estiver usando o windows, com wsl, utilize o comando abaixo para copiar para a máquina Linux. Se já estiver utilizando Linux, pule esta etapa.
 ```cmd
@@ -87,11 +87,11 @@ chmod 400 [SUA_CHAVE].pem
 ```
 
 - Continue as configurações:
-![alt text](<4.4 EC2.png>)
-![alt text](<4.5 EC2.png>)
+![<4.4 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.4%20EC2.png)
+![<4.5 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.5%20EC2.png)
 
 - Revise as configurações e clique em *Launch Instance*
-![alt text](<4.6 EC2.png>)
+![<4.6 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.6%20EC2.png)
 
 ## **Etapa 2: Conectando-se à Instância**
 Agora é o momento de testar se todas as configurações foram aplicadas corretamente.
@@ -326,9 +326,14 @@ Salve o arquivo. Dessa forma, o script irá verificar, a cada 3 minutos, se o ng
 Para parar a execução, edite o arquivo cron e exclua a linha referente ao script.
 ---
 
-## **🔥 Desafios Bônus (Opcional)**
 
-### **1️⃣ Automatização com User Data**
+
+## **Automatização com User Data**
+Uma outra forma de fazer as configurações da instância é a utilização de *User Data* no momento da criação da instância.
+Para isso, siga a [Etapa 1](#etapa-1-configuração-do-ambiente), mas, antes de lançar a instância, faça a seguinte configuração:
+
+- Expanda as configurações avançadas:
+![5 USERDATA.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/5%20USERDATA.png)
 Adicione este script no campo **"User Data"** ao criar a EC2:
 ```bash
 #!/bin/bash
