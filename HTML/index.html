@@ -1,23 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
-    <title>Projeto 1</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href=style.css>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuração de Servidor Web</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+    <style>
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+    </style>
 </head>
 <body>
-    <h1>MONITORANDO UM SERVIDOR WEB</h1>
-    <p>If you see this page, the nginx web server is successfully installed and working. Further configuration is required.</p>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Servidor Web</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#sobre">Sobre Mim</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+                </ul>
+                <button class="btn btn-light ms-auto" onclick="toggleTheme()">Modo Claro/Escuro</button>
+            </div>
+        </div>
+    </nav>
 
-    <p>For online documentation and support please refer to
-    <a href="http://nginx.org/">nginx.org</a>.<br/>
-    Commercial support is available at
-    <a href="http://nginx.com/">nginx.com</a>.</p>
+    <div class="container mt-4">
+        <h1 class="text-center">Configuração de Servidor Web com Monitoramento</h1>
+        <p class="text-center">Este projeto configura um servidor web na AWS com monitoramento automático.</p>
 
-    <p><em>Thank you for using nginx.</em></p>
+        <!-- Seções escondidas que aparecem ao clicar -->
+        <div class="list-group mt-4">
+            <a href="manual.html" class="list-group-item list-group-item-action">Configuração Manual</a>
+            <a href="userdata.html" class="list-group-item list-group-item-action">Configuração via User Data</a>
+            <a href="cloudformation.html" class="list-group-item list-group-item-action">Configuração via CloudFormation</a>
+        </div>
+
+        <!-- Sobre Mim -->
+        <section id="sobre" class="mt-5">
+            <h2>Sobre Mim</h2>
+            <p>Aqui irei adicionar informações sobre o autor do projeto.</p>
+        </section>
+
+        <!-- Contato -->
+        <section id="contato" class="mt-5">
+            <h2>Contato</h2>
+            <p>Recursos úteis: <a href="https://aws.amazon.com" target="_blank">AWS</a>, <a href="https://nginx.org" target="_blank">Nginx</a>, Webhooks.</p>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center p-3 mt-4">
+        <p>Desenvolvido por [Seu Nome] - &copy; 2025 Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<Footer>
-    <p>Desenvolvido por: <a href="https://www.linkedin.com/in/viniciusesilva/">Vinicius Silva</a>
-</Footer>
 </html>
