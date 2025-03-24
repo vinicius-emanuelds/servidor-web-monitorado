@@ -282,7 +282,7 @@ Salve o arquivo. Dessa forma, o script irá verificar, a cada minuto, se o servi
   ```bash
   sudo systemctl start nginx
   ```
-<br>
+
 Você também pode automatizar o teste criando um script. Para isso, no terminal, digite:
 
 ```bash
@@ -321,11 +321,8 @@ Adicione ao final do arquivo:
 ```bash
 */3 * * * * /home/ubuntu/nginx_status.sh
 ```
-Salve o arquivo. Dessa forma, o script irá verificar, a cada 3 minutos, se o nginx está ativo. Caso ele esteja inativo, ele irá ativar. Se ele estiver ativo, ele irá desativar.
 
-Para parar a execução, edite o arquivo cron e exclua a linha referente ao script.
----
-
+<p>Salve o arquivo. Dessa forma, o script irá verificar, a cada 3 minutos, se o nginx está ativo. Caso ele esteja inativo, ele irá ativar. Se ele estiver ativo, ele irá desativar. Para parar a execução, edite o arquivo cron e exclua a linha referente ao script.</p>
 
 
 ## **Automatização com User Data**
@@ -334,58 +331,185 @@ Para isso, siga a [Etapa 1](#etapa-1-configuração-do-ambiente), mas, antes de 
 
 - Expanda as configurações avançadas:
 ![5 USERDATA.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/5%20USERDATA.png)
-Adicione este script no campo **"User Data"** ao criar a EC2:
+
+- Role até o final da pagina e encontre o campo *User Data*:
+![5.1 USERDATA.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/5.1%20USERDATA.png)
+
+- Adicione este script no campo **"User Data"** ao criar a EC2:
 ```bash
-#!/bin/bash
-apt update -y && apt upgrade -y
-apt install -y nginx
-cat <<EOF > /var/www/html/index.html
+#!/usr/bin/env bash
+
+# === Configuração Inicial ===
+# Esse script é executado no primeiro boot da instância EC2 (Ubuntu Server)
+# Ele configura o servidor e instala o Nginx
+
+# Atualiza a lista de pacotes do sistema e instala o Nginx
+sudo apt update -y && sudo apt install nginx -y
+
+# Criação da página HTML básica para o servidor Nginx
+sudo cat << 'EOF' > /var/www/html/index.html
 <!DOCTYPE html>
-<html><body><h1>Servidor via User Data</h1></body></html>
+<html>
+<head><title>Servidor Web</title></head>
+<body>
+    <h1>Servidor Web configurado!</h1>
+</body>
+</html>
 EOF
-systemctl restart nginx
-systemctl enable nginx
+
+# Habilita e inicia o serviço do Nginx
+sudo systemctl enable nginx --now
+
+# === Criação do Script de Monitoramento ===
+MONITOR_SCRIPT="/home/ubuntu/monitoramento.sh"
+LOGS_DIR="/var/log/"
+LOGS_CRON="/var/log/cron_monitor.log"
+
+sudo cat << 'EOF' > $MONITOR_SCRIPT
+#!/usr/bin/env bash
+
+LOCKFILE="/tmp/monitorar.lock"
+LOGS="/var/log/monitorar.log"
+BOT_TOKEN="[COLE AQUI O TOKEN GERADO PELO BOT]"
+CHAT_ID="[COLE SEU CHAT_ID]"
+
+if [ -e "$LOCKFILE" ]; then
+    echo "O script já está em execução. Abortando."
+    exit 1
+fi
+
+trap 'rm -f "$LOCKFILE"' EXIT
+
+touch "$LOCKFILE"
+
+if [ ! -f "$LOGS" ]; then
+    mkdir -p $(dirname "$LOGS")
+    touch "$LOGS"
+fi
+
+enviar_alerta() {
+    local MENSAGEM="$1"
+    curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
+        -d "chat_id=$CHAT_ID" \
+        -d "text=$MENSAGEM" > /dev/null 2>&1
+}
+
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost)
+TIME=$(date "+%d-%m-%Y %H:%M:%S")
+
+case $STATUS in
+    200)
+        echo "$TIME - ✅ Site online!" | tee -a "$LOGS"
+        ;;
+    400)
+        MENSAGEM="$TIME - 🚨 ERRO 400: Requisição inválida!"
+        echo "$MENSAGEM" | tee -a "$LOGS"
+        enviar_alerta "$MENSAGEM"
+        ;;
+    401)
+        MENSAGEM="$TIME - 🚨 ERRO 401: Não autorizado!"
+        echo "$MENSAGEM" | tee -a "$LOGS"
+        enviar_alerta "$MENSAGEM"
+        ;;
+    403)
+        MENSAGEM="$TIME - 🚨 ERRO 403: Acesso proibido!"
+        echo "$MENSAGEM" | tee -a "$LOGS"
+        enviar_alerta "$MENSAGEM"
+        ;;
+    404)
+        MENSAGEM="$TIME - 🚨 ERRO 404: Página não encontrada!"
+        echo "$MENSAGEM" | tee -a "$LOGS"
+        enviar_alerta "$MENSAGEM"
+        ;;
+    408)
+        MENSAGEM="$TIME - 🚨 ERRO 408: Tempo limite da requisição!"
+        echo "$MENSAGEM" | tee -a "$LOGS"
+        enviar_alerta "$MENSAGEM"
+        ;;
+    429)
+        MENSAGEM="$TIME - 🚨 ERRO 429: Muitas requisições!"
+        echo "$MENSAGEM" | tee -a "$LOGS"
+        enviar_alerta "$MENSAGEM"
+        ;;
+    500)
+        MENSAGEM="$TIME - 🚨 ERRO 500: Erro interno do servidor!"
+        echo "$MENSAGEM" | tee -a "$LOGS"
+        enviar_alerta "$MENSAGEM"
+        ;;
+    502)
+        MENSAGEM="$TIME - 🚨 ERRO 502: Gateway inválido!"
+        echo "$MENSAGEM" | tee -a "$LOGS"
+        enviar_alerta "$MENSAGEM"
+        ;;
+    503)
+        MENSAGEM="$TIME - 🚨 ERRO 503: Serviço indisponível!"
+        echo "$MENSAGEM" | tee -a "$LOGS"
+        enviar_alerta "$MENSAGEM"
+        ;;
+    504)
+        MENSAGEM="$TIME - 🚨 ERRO 504: Tempo limite do gateway!"
+        echo "$MENSAGEM" | tee -a "$LOGS"
+        enviar_alerta "$MENSAGEM"
+        ;;
+    *)
+        MENSAGEM="$TIME - 🚨 ERRO $STATUS: Problema desconhecido!"
+        echo "$MENSAGEM" | tee -a "$LOGS"
+        enviar_alerta "$MENSAGEM"
+        ;;
+esac
+
+rm -f "$LOCKFILE"
+EOF
+
+# Concede permissão de execução ao script
+sudo chmod +x $MONITOR_SCRIPT
+
+# Adiciona o script ao crontab para rodar a cada minuto e registra logs no arquivo dedicado
+CRON_JOB="*/1 * * * * /home/ubuntu/monitorar.sh >> $LOGS_CRON 2>&1"
+( crontab -l 2>/dev/null; echo "$CRON_JOB" ) | crontab -
+
+# Criação do arquivo de log para o crontab
+sudo touch $LOGS_CRON
+sudo chmod 666 $LOGS_CRON
+
+# === Criação do Script de Status do Nginx ===
+STATUS_SCRIPT="/home/ubuntu/nginx_status.sh"
+
+sudo cat << 'EOF' > $STATUS_SCRIPT
+#!/usr/bin/env bash
+
+# Verifica o status do serviço nginx
+STATUS=$(systemctl is-active nginx)
+
+if [ "$STATUS" == "active" ]; then
+    # Se o nginx está ativo, então desativa
+    echo "O serviço nginx está ativo. Desativando..."
+    sudo systemctl stop nginx
+else
+    # Se o nginx está inativo, então ativa
+    echo "O serviço nginx está inativo. Ativando..."
+    sudo systemctl start nginx
+fi
+EOF
+
+# Torna o script de status executável
+sudo chmod +x $STATUS_SCRIPT
+
+# Adiciona o script ao crontab para rodar a cada 3 minutos
+CRON_STATUS="*/3 * * * * /home/ubuntu/nginx_status.sh >> /var/log/nginx_status.log 2>&1"
+( crontab -l 2>/dev/null; echo "$CRON_STATUS" ) | crontab -
+
 ```
 
-### **2️⃣ Infraestrutura com CloudFormation**
-Crie um arquivo `infraestrutura.yaml`:
-```yaml
-AWSTemplateFormatVersion: "2010-09-09"
-Description: "Provisiona uma VPC, sub-redes, EC2 e configura o servidor."
-Resources:
-  MinhaVPC:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock: "10.0.0.0/16"
-  SubnetPublica:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref MinhaVPC
-      CidrBlock: "10.0.1.0/24"
-      MapPublicIpOnLaunch: true
-  MinhaEC2:
-    Type: AWS::EC2::Instance
-    Properties:
-      InstanceType: "t2.micro"
-      ImageId: "ami-0c55b159cbfafe1f0"
-      SubnetId: !Ref SubnetPublica
-      UserData:
-        Fn::Base64: |
-          #!/bin/bash
-          apt update -y
-          apt install -y nginx
-          echo "<h1>Servidor via CloudFormation!</h1>" > /var/www/html/index.html
-```
+Agora, lance a instância. Não é necessário executar mais nenhuma configuração, apenas conecte-se à instância e acesse os arquivos de log para acompanhar a execução dos scripts.
 
 ---
 
-## **🎯 Conclusão**
+## **Conclusão**
 Agora você tem um **servidor web totalmente configurado e monitorado**, com opções de **automatização** para facilitar a implantação.
 
-**Diferenciais deste projeto:**
-✔ Configuração manual e automatizada com **User Data**.
-✔ Infraestrutura como código com **CloudFormation**.
+**Diferenciais deste projeto:**<br>
+✔ Configuração manual e automatizada com **User Data**.<br>
 ✔ Monitoramento inteligente com **notificações automáticas**.
 
-🚀 **Agora é sua vez de testar e personalizar!**
-
+**Agora é sua vez de testar e personalizar!**
