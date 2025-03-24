@@ -9,7 +9,32 @@ Este projeto tem como objetivo configurar um servidor web na AWS com monitoramen
 - Opção de **automatização** com **User Data** e **CloudFormation**.
 
 ---
-
+## MENU
+- [**MONITORANDO UM SERVIDOR WEB**](#monitorando-um-servidor-web)
+  - [**Visão Geral**](#visão-geral)
+  - [MENU](#menu)
+  - [Preparação](#preparação)
+    - [Configurando o AWS CLI](#configurando-o-aws-cli)
+    - [Configurando o Webhook no Telegram](#configurando-o-webhook-no-telegram)
+      - [**Passo 1: Criar o Bot**](#passo-1-criar-o-bot)
+      - [**Passo 2: Obter o Chat ID**](#passo-2-obter-o-chat-id)
+      - [**Passo 3: Iniciar o Bot**](#passo-3-iniciar-o-bot)
+  - [**Etapa 1: Configuração do Ambiente**](#etapa-1-configuração-do-ambiente)
+    - [**Criar a VPC**](#criar-a-vpc)
+    - [**Criando um Security Group**](#criando-um-security-group)
+    - [**Criar a instância EC2**](#criar-a-instância-ec2)
+  - [**Etapa 2: Conectando-se à Instância**](#etapa-2-conectando-se-à-instância)
+  - [**Etapa 3: Configuração do Servidor Web**](#etapa-3-configuração-do-servidor-web)
+    - [**1 - Instalar o e iniciar o Nginx**](#1---instalar-o-e-iniciar-o-nginx)
+    - [**2 - Criar a Página HTML**](#2---criar-a-página-html)
+    - [**3 - Testar o Servidor**](#3---testar-o-servidor)
+  - [**Etapa 4: Monitoramento e Notificações**](#etapa-4-monitoramento-e-notificações)
+    - [**1 - Criar o Script de Monitoramento**](#1---criar-o-script-de-monitoramento)
+    - [**2 - Automatizar a Execução com Cron**](#2---automatizar-a-execução-com-cron)
+  - [**Etapa 5: Testes**](#etapa-5-testes)
+    - [**Testar a Implementação**](#testar-a-implementação)
+  - [**Automatização com User Data**](#automatização-com-user-data)
+  - [**Conclusão**](#conclusão)
 ## Preparação
 Antes de iniciarmos as configurações do ambiente AWS e a criação do servidor, é preciso configurar nosso setup para que este se conecte com a instância AWS. Ainda, precisamos configurar todo o processo de webhook com o Telegram.
 
@@ -38,7 +63,7 @@ Para enviar mensagens através do webhook, precisamos "iniciar" nosso bot para q
 
 ## **Etapa 1: Configuração do Ambiente**
 
-### **1. Criar a VPC**
+### **Criar a VPC**
 Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com um internet gateway conectado à uma das sub-redes públicas.
 
 - Após logar no console AWS, selecione VPC (ou digite na barra de busca).
@@ -53,7 +78,7 @@ Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com
 - Se as configurações estiverem corretas, o fluxo ser similar à esse:
 ![<2.3 VPC.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.3%20VPC.png)
 
-### Criando um Security Group
+### **Criando um Security Group**
 - No dashboard, clique em EC2. Depois, na seção à esquerda, selecione *Secuity Group*
 ![<3 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3%20SG.png)
 
@@ -261,9 +286,9 @@ Salve o arquivo. Dessa forma, o script irá verificar, a cada minuto, se o servi
 
 ---
 
-## **Etapa 4: Testes**
+## **Etapa 5: Testes**
 
-### **1️⃣ Testar a Implementação**
+### **Testar a Implementação**
 - Acesse `http://IP_DA_INSTANCIA` para verificar o site.
 
 - Pare o Nginx e aguarde 1 minuto:

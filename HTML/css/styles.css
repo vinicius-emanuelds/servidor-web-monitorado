@@ -1,0 +1,37 @@
+/* styles.css */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.light-mode {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+.footer {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+.footer a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #cccccc;
+}
+
+section {
+    padding-top: 60px; /* Ajuste para o navbar fixo */
+    margin-top: -60px; /* Compensa o espaçamento do navbar */
+}
