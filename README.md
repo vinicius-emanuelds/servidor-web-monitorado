@@ -5,7 +5,7 @@ Este projeto tem como objetivo configurar um servidor web na AWS com monitoramen
 - Criação de uma **VPC** com sub-redes públicas e privadas.
 - Configuração de uma **instância EC2** e instalação do **Nginx**.
 - Criação de uma **página HTML** para testes.
-- Implementação de um **script de monitoramento** com envio de notificação para o **Telegram.
+- Implementação de um **script de monitoramento** com envio de notificação para o **Telegram**.
 - Opção de **automatização** com **User Data** e **CloudFormation**.
 
 ---
