@@ -35,6 +35,8 @@ Este projeto tem como objetivo configurar um servidor web na AWS com monitoramen
     - [**Testar a Implementação**](#testar-a-implementação)
   - [**Automatização com User Data**](#automatização-com-user-data)
   - [**Conclusão**](#conclusão)
+---
+<br>
 ## Preparação
 Antes de iniciarmos as configurações do ambiente AWS e a criação do servidor, é preciso configurar nosso setup para que este se conecte com a instância AWS. Ainda, precisamos configurar todo o processo de webhook com o Telegram.
 
@@ -72,7 +74,7 @@ Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com
 - Clique em *Create VPC*
 ![2 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2%20VPC.png)
 
-- Aplique as configurações abaixo e clique em *Create VPC*
+- Aplique as configurações abaixo e clique em *Create VPC*<br>
 ![2.1 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.1%20VPC.png)
 ![2.2 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.2%20VPC.png)
 - Se as configurações estiverem corretas, o fluxo ser similar à esse:
