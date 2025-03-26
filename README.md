@@ -35,7 +35,6 @@ Este projeto tem como objetivo configurar um servidor web na AWS com monitoramen
     - [**Testar a Implementação**](#testar-a-implementação)
   - [**Automatização com User Data**](#automatização-com-user-data)
     - [⚠️ ATENÇÃO](#️-atenção)
-  - [Agora, lance a instância. Não é necessário executar mais nenhuma configuração, apenas conecte-se à instância e acesse os arquivos de log para acompanhar a execução dos scripts.](#agora-lance-a-instância-não-é-necessário-executar-mais-nenhuma-configuração-apenas-conecte-se-à-instância-e-acesse-os-arquivos-de-log-para-acompanhar-a-execução-dos-scripts)
   - [**Conclusão**](#conclusão)
 ---
 
@@ -99,6 +98,8 @@ Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com
 ![<3.2 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3.2%20SG.png)
 ![<3.3 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3.3%20SG.png)
 
+<br>
+
 ### **Criar a instância EC2**
 - Em EC2, na seção à esquerda, clique em *Instances* e depois em "Launch Instances"
 ![<4 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4%20EC2.png)
@@ -128,6 +129,8 @@ chmod 400 [SUA_CHAVE].pem
 - Revise as configurações e clique em *Launch Instance* <br>
 ![<4.6 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.6%20EC2.png)
 
+<br>
+
 ## **Etapa 2: Conectando-se à Instância**
 Agora é o momento de testar se todas as configurações foram aplicadas corretamente.
 
@@ -136,6 +139,8 @@ Agora é o momento de testar se todas as configurações foram aplicadas correta
 ssh -i /local/da/chave/privada/[SUA_CHAVE].pem [USUÁRIO_EC2]@ip_publico
 ```
 - Será solicitado a confirmação de acesso. Digite `yes` e aperte enter. Se tudo ocorrer como esperado, você estará conectado à instância EC2
+
+<br>
 
 ## **Etapa 3: Configuração do Servidor Web**
 ### **1 - Instalar o e iniciar o Nginx**
@@ -146,6 +151,8 @@ sudo apt-get install -y nginx
 sudo systemctl start nginx
 sudo systemctl enable nginx
 ```
+
+<br>
 
 ### **2 - Criar a Página HTML**
 Agora, vamos usar o editor Nano para criar a página HTML exibida ao acessar o servidor. Digite no terminal:
@@ -166,10 +173,14 @@ Adicione o conteúdo de sua página ao editor. Abaixo, temos um exemplo de pági
 ```
 Para salvar as alterações do Nano, digte `Ctrl + x`, `y` e aperte `enter`.
 
+<br>
+
 ### **3 - Testar o Servidor**
 Agora, acesse um navegador e coloque o IP público da instância. Se tudo estiver configurado corretamente, você deverá visualizar a página.
 
 ---
+
+<br>
 
 ## **Etapa 4: Monitoramento e Notificações**
 ### **1 - Criar o Script de Monitoramento**
