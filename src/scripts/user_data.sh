@@ -460,14 +460,14 @@ EOF
 sudo chmod +x $MONITOR_SCRIPT
 
 # Adiciona o script ao crontab para rodar a cada minuto e registra logs no arquivo dedicado
-CRON_JOB="*/1 * * * * echo \"$(date) - Executando monitorar.sh\" >> $LOGS_CRON && /home/usuario/monitorar.sh >> $LOGS_CRON 2>&1"
+CRON_JOB="*/1 * * * * echo \"\$(date '+\%d-\%m-\%Y \%H:\%M:\%S') - Executando monitorar.sh\" >> $LOGS_CRON && /home/usuario/monitorar.sh >> $LOGS_CRON 2>&1"
 ( crontab -l 2>/dev/null; echo "$CRON_JOB" ) | crontab -
 
 # Criação do arquivo de log para o crontab
 sudo touch $LOGS_CRON
 sudo chmod 666 $LOGS_CRON
 
-# === Criação do Script de Status do Nginx ===
+# Criação do Script de Status do Nginx
 STATUS_SCRIPT="/home/usuario/nginx_status.sh"
 
 sudo cat << 'EOF' > $STATUS_SCRIPT
@@ -495,6 +495,6 @@ sudo chmod +x $STATUS_SCRIPT
 sudo touch $LOGS_STATUS
 sudo chmod 666 $LOGS_STATUS
 
-# Adiciona o script ao crontab para rodar a cada 2 minutos
-CRON_STATUS="*/2 * * * * /home/usuario/nginx_status.sh >> $LOGS_STATUS 2>&1"
+# Adiciona o script ao crontab para rodar a cada 1 minutos
+CRON_STATUS="*/1 * * * * /home/usuario/nginx_status.sh >> $LOGS_STATUS 2>&1"
 ( crontab -l 2>/dev/null; echo "$CRON_STATUS" ) | crontab -

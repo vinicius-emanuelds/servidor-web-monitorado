@@ -1,51 +1,44 @@
 # **MONITORANDO UM SERVIDOR WEB**
 
-## **Visão Geral**
+## ÍNDICE
+### Visão Geral
+- [O que é o projeto?](#visão-geral)
+
+### Recursos Necessários
+- [O que é preciso para este projeto?](#preparação)
+  - [AWS CLI](#configurando-o-aws-cli-️)
+  - [WEBHOOK](#configurando-o-webhook-no-telegram)
+
+
+# VISÃO GERAL
 Este projeto tem como objetivo configurar um servidor web na AWS com monitoramento automático. Ele inclui:
 - Criação de uma **VPC** com sub-redes públicas e privadas.
 - Configuração de uma **instância EC2** e instalação do **Nginx**.
 - Criação de uma **página HTML** para testes.
 - Implementação de um **script de monitoramento** com envio de notificação para o **Telegram**.
-- Opção de **automatização** com **User Data** e **CloudFormation**.
+- Implementação de um **script de testes** para verificar todas as configurações e cenários.
+- Opção de **automatização** com **User Data**.
+
+[⬆️](#índice)
+
+# RECURSOS NECESSÁRIOS
+Antes de mais nada, é preciso ter uma conta ativa na AWS.
+> A [Amazon Web Services (AWS)](https://aws.amazon.com/pt/what-is-aws/) é a plataforma de nuvem mais adotada e mais abrangente do mundo, oferecendo mais de 200 serviços completos de datacenters em todo o mundo. Milhões de clientes, incluindo as startups que crescem mais rápido, as maiores empresas e os maiores órgãos governamentais, estão usando a AWS para reduzir custos, ganhar agilidade e inovar mais rapidamente.
+
+Agora, antes de iniciarmos as configurações do ambiente AWS e a criação do servidor, precisamos configurar nosso setup para que este se conecte com a instância AWS. Ainda, precisamos configurar todo o processo de webhook com o Telegram.  
+
+[⬆️](#índice)
 
 ---
-## MENU
-- [**MONITORANDO UM SERVIDOR WEB**](#monitorando-um-servidor-web)
-  - [**Visão Geral**](#visão-geral)
-  - [MENU](#menu)
-  - [Preparação](#preparação)
-    - [Configurando o AWS CLI](#configurando-o-aws-cli)
-    - [Configurando o Webhook no Telegram](#configurando-o-webhook-no-telegram)
-      - [**Passo 1: Criar o Bot**](#passo-1-criar-o-bot)
-      - [**Passo 2: Obter o Chat ID**](#passo-2-obter-o-chat-id)
-      - [**Passo 3: Iniciar o Bot**](#passo-3-iniciar-o-bot)
-  - [**Etapa 1: Configuração do Ambiente**](#etapa-1-configuração-do-ambiente)
-    - [**Criar a VPC**](#criar-a-vpc)
-    - [**Criando um Security Group**](#criando-um-security-group)
-    - [**Criar a instância EC2**](#criar-a-instância-ec2)
-  - [**Etapa 2: Conectando-se à Instância**](#etapa-2-conectando-se-à-instância)
-  - [**Etapa 3: Configuração do Servidor Web**](#etapa-3-configuração-do-servidor-web)
-    - [**1 - Instalar o e iniciar o Nginx**](#1---instalar-o-e-iniciar-o-nginx)
-    - [**2 - Criar a Página HTML**](#2---criar-a-página-html)
-    - [**3 - Testar o Servidor**](#3---testar-o-servidor)
-  - [**Etapa 4: Monitoramento e Notificações**](#etapa-4-monitoramento-e-notificações)
-    - [**1 - Criar o Script de Monitoramento**](#1---criar-o-script-de-monitoramento)
-    - [**2 - Automatizar a Execução com Cron**](#2---automatizar-a-execução-com-cron)
-  - [**Etapa 5: Testes**](#etapa-5-testes)
-    - [**Testar a Implementação**](#testar-a-implementação)
-  - [**Automatização com User Data**](#automatização-com-user-data)
-    - [⚠️ ATENÇÃO](#️-atenção)
-  - [**Conclusão**](#conclusão)
----
-
-## Preparação
-Antes de iniciarmos as configurações do ambiente AWS e a criação do servidor, é preciso configurar nosso setup para que este se conecte com a instância AWS. Ainda, precisamos configurar todo o processo de webhook com o Telegram.
-
-### Configurando o AWS CLI
+## Configurando o AWS CLI
   Basicamente, iremos nos conectar à instância através do terminal, via linha de comando. Para isto, iremos configurar o **AWS CLI** em nosso setup. [Clique aqui](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html) para acessar a documentação oficial, com um passo a passo detalhado para a instalação e configuração.
 
-### Configurando o Webhook no Telegram
-#### **Passo 1: Criar o Bot**
+ [⬆️](#índice)
+
+<br>
+
+## Configurando o Webhook no Telegram
+### **Passo 1: Criar o Bot**
 1. No Telegram, procure por `@BotFather`.
 2. Inicie uma conversa e envie o comando `/newbot`.
 3. O BotFather pedirá um nome para o bot (exemplo: `MonitoramentoBot`).
@@ -54,23 +47,26 @@ Antes de iniciarmos as configurações do ambiente AWS e a criação do servidor
 
 <br>
 
-#### **Passo 2: Obter o Chat ID**
+### **Passo 2: Obter o Chat ID**
 Para enviar mensagens, precisamos saber para onde o bot deve enviá-las.
 1. Acesse `https://t.me/RawDataBot` no Telegram e inicie uma conversa.
 2. Ele fornecerá seu `chat_id`. **Guarde essa informação**
 
 <br>
 
-#### **Passo 3: Iniciar o Bot**
+### **Passo 3: Iniciar o Bot**
 Para enviar mensagens através do webhook, precisamos "iniciar" nosso bot para que ele reconheça nosso chat_id.
 1. No Telegram, procure por `@MonitoramentoBot` (use o nome que você deu ao bot.
 2. Inicie uma conversa enviando o comando `/start.
 
+[⬆️](#índice)
+
 ---
 
-## **Etapa 1: Configuração do Ambiente**
 
-### **Criar a VPC**
+# **Etapa 1: Configuração do Ambiente**
+
+## **Criar a VPC**
 Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com um internet gateway conectado à uma das sub-redes públicas.
 
 - Após logar no console AWS, selecione VPC (ou digite na barra de busca).
@@ -85,9 +81,10 @@ Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com
 - Se as configurações estiverem corretas, o fluxo ser similar à esse:
 ![<2.3 VPC.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.3%20VPC.png)
 
+[⬆️](#índice)
 <br>
 
-### **Criando um Security Group**
+## **Criando um Security Group**
 - No dashboard, clique em EC2. Depois, na seção à esquerda, selecione *Secuity Group*
 ![<3 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3%20SG.png)
 
@@ -98,9 +95,11 @@ Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com
 ![<3.2 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3.2%20SG.png)
 ![<3.3 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3.3%20SG.png)
 
+[⬆️](#índice)
+
 <br>
 
-### **Criar a instância EC2**
+## **Criar a instância EC2**
 - Em EC2, na seção à esquerda, clique em *Instances* e depois em "Launch Instances"
 ![<4 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4%20EC2.png)
 ![<4.0 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.0%20EC2.png)
@@ -112,7 +111,7 @@ Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com
 - Para criar um "Key Pair", faça:<br>
 ![<4.3 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.3%20EC2.png)
 
-- Após a criação, a chave será baixada automaticamente para sua máquina. É importante mantê-la disponível no momento da conexão com a instância. Se estiver usando o windows, com wsl, utilize o comando abaixo para copiar para a máquina Linux. Se já estiver utilizando Linux, pule esta etapa.
+Após a criação, a chave será baixada automaticamente para sua máquina. É importante mantê-la disponível no momento da conexão com a instância. Se estiver usando o windows, com wsl, utilize o comando abaixo para copiar para a máquina Linux. Se já estiver utilizando Linux, pule esta etapa.
 ```cmd
 scp \caminho_para_chave\[SUA_CHAVE].pem [USUÁRIO]@[IP_LINUX]:/home/[USUÁRIO]
 ```
@@ -129,21 +128,35 @@ chmod 400 [SUA_CHAVE].pem
 - Revise as configurações e clique em *Launch Instance* <br>
 ![<4.6 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.6%20EC2.png)
 
+[⬆️](#índice)
+
 <br>
 
-## **Etapa 2: Conectando-se à Instância**
+# **Etapa 2: Conectando-se à Instância**
 Agora é o momento de testar se todas as configurações foram aplicadas corretamente.
 
-- No seu terminal linux, utilize o comando abaixo:
+- No console AWS, ao selecionar sua instância, todas as informações sobre ela são exibidas <br>
+![STATUS.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/STATUS.png)
+
+- Verififique se o status da instância aparece como ***running*** <br>
+![STATUS(2).PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/STATUS%20(2).png)
+
+- Agora, no seu terminal linux, utilize o comando abaixo:
 ```bash
 ssh -i /local/da/chave/privada/[SUA_CHAVE].pem [USUÁRIO_EC2]@ip_publico
 ```
+
+> Você também pode acessa esse comando pelo console AWS, clicando em ***connect*** e depois em ***SSH Client*** <br>
+> ![CONEXÃO.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/CONEX%C3%83O.png) <br>
+> ![CONECTAR.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/CONECTAR.png)
+
 - Será solicitado a confirmação de acesso. Digite `yes` e aperte enter. Se tudo ocorrer como esperado, você estará conectado à instância EC2
 
+[⬆️](#índice)
 <br>
 
-## **Etapa 3: Configuração do Servidor Web**
-### **1 - Instalar o e iniciar o Nginx**
+# **Etapa 3: Configuração do Servidor Web**
+## **Instalar o e iniciar o Nginx**
 No seu terminal, digite os seguintes comandos:
 ```bash
 sudo apt-get update -y
@@ -151,17 +164,21 @@ sudo apt-get install -y nginx
 sudo systemctl start nginx
 sudo systemctl enable nginx
 ```
+[⬆️](#índice)
 
 <br>
 
-### **2 - Criar a Página HTML**
+## **Criar a Página HTML**
 Agora, vamos usar o editor Nano para criar a página HTML exibida ao acessar o servidor. Digite no terminal:
 
 ```bash
 sudo nano /var/www/html/index.html
 ```
 
-Adicione o conteúdo de sua página ao editor. Abaixo, temos um exemplo de página básica:
+Adicione o conteúdo de sua página ao editor. Abaixo, temos um exemplo de página básica.
+
+> No repósitorio há um diretório com a página criada para este projeto, utilizando bootstrap, CSS e Javascript. Se desejar, o script [user_data.sh](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/b8e673efc0ee6ce41d9ea324c414e45d1dfdb765/src/scripts/user_data.sh) está configurado para realizar todas as configurações necessárias para exibir uma página mais robusta.
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -173,17 +190,25 @@ Adicione o conteúdo de sua página ao editor. Abaixo, temos um exemplo de pági
 ```
 Para salvar as alterações do Nano, digte `Ctrl + x`, `y` e aperte `enter`.
 
-<br>
-
-### **3 - Testar o Servidor**
-Agora, acesse um navegador e coloque o IP público da instância. Se tudo estiver configurado corretamente, você deverá visualizar a página.
-
----
+[⬆️](#índice)
 
 <br>
 
-## **Etapa 4: Monitoramento e Notificações**
-### **1 - Criar o Script de Monitoramento**
+## **Testar o Servidor**
+Agora, acesse um navegador e coloque o IP público da instância.
+
+> O IP público da instância pode ser encontrado no console ASW: <br
+> ![IP PUBLICO.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/IP%20PUBLICO.png)
+
+Se tudo estiver configurado corretamente, você deverá visualizar a página. <br>
+![TESTE.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/TESTE.png)
+
+[⬆️](#índice)
+
+<br>
+
+# **Etapa 4: Monitoramento e Notificações**
+## **Criar o Script de Monitoramento**
 Agora, vamos configurar o monitoramento do servidor através de um shell script.
 
 No terminal, digite:
@@ -200,7 +225,8 @@ LOGS="/var/log/monitorar.log"
 BOT_TOKEN="[COLE AQUI O TOKEN GERADO PELO BOT]"
 CHAT_ID="[COLE SEU CHAT_ID]"
 
-if [ -e "$LOCKFILE" ]; then
+exec 200>"$LOCKFILE"
+if ! flock -n 200; then
     echo "O script já está em execução. Abortando."
     exit 1
 fi
@@ -210,7 +236,6 @@ trap 'rm -f "$LOCKFILE"' EXIT
 touch "$LOCKFILE"
 
 if [ ! -f "$LOGS" ]; then
-    mkdir -p $(dirname "$LOGS")
     touch "$LOGS"
 fi
 
@@ -226,61 +251,61 @@ TIME=$(date "+%d-%m-%Y %H:%M:%S")
 
 case $STATUS in
     200)
-        echo "$TIME - ✅ Site online!" | tee -a "$LOGS"
+        echo "$TIME - ✅ Site online!" >> "$LOGS"
         ;;
     400)
         MENSAGEM="$TIME - 🚨 ERRO 400: Requisição inválida!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     401)
         MENSAGEM="$TIME - 🚨 ERRO 401: Não autorizado!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     403)
         MENSAGEM="$TIME - 🚨 ERRO 403: Acesso proibido!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     404)
         MENSAGEM="$TIME - 🚨 ERRO 404: Página não encontrada!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     408)
         MENSAGEM="$TIME - 🚨 ERRO 408: Tempo limite da requisição!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     429)
         MENSAGEM="$TIME - 🚨 ERRO 429: Muitas requisições!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     500)
         MENSAGEM="$TIME - 🚨 ERRO 500: Erro interno do servidor!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     502)
         MENSAGEM="$TIME - 🚨 ERRO 502: Gateway inválido!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     503)
         MENSAGEM="$TIME - 🚨 ERRO 503: Serviço indisponível!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     504)
         MENSAGEM="$TIME - 🚨 ERRO 504: Tempo limite do gateway!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     *)
-        MENSAGEM="$TIME - 🚨 ERRO $STATUS: Problema desconhecido!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        MENSAGEM="$TIME - 🚨 ERRO $STATUS: Servidor offline!"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
 esac
@@ -292,42 +317,55 @@ Agora, iremos alterar as permissões do arquivo para que ele possa ser executado
 ```bash
 sudo chmod +x /home/[USUÁRIO]/monitoramento.sh
 ```
+[⬆️](#índice)
 
-### **2 - Automatizar a Execução com Cron**
-Agora vamos automatizar a execução do script com o Cron.
-No terminal, digite:
+<br>
+
+## **Automatizar a Execução com Cron**
+Agora vamos automatizar a execução do script com o Cron.<br>
+
+Primeriro, crie o arquivo de logs:
+~~~bash    
+sudo touch /var/log/monitoramento/cron_monitor.log
+sudo chmod 666 /var/log/monitoramento/cron_monitor.log
+~~~
+
+Agora, no terminal, digite:
 ```bash
 sudo crontab -e
 ```
+
 Escolha uma das 4 opções de editor. Depois, adicione ao final do arquivo:
 ```bash
-*/1 * * * * /home/ubuntu/monitorar.sh
+*/1 * * * * echo \"\$(date '+\%d-\%m-\%Y \%H:\%M:\%S') - Executando monitorar.sh\" >> /var/log/monitoramento/cron_monitor.log && /home/usuario/monitorar.sh >> /var/log/monitoramento/cron_monitor.log 2>&1"
 ```
 Salve o arquivo. Dessa forma, o script irá verificar, a cada minuto, se o servidor está online. Caso ele esteja offline, uma notificação será encaminhado ao Telegram.
 
----
+[⬆️](#índice)
+<br>
 
-## **Etapa 5: Testes**
 
-### **Testar a Implementação**
+# **Etapa 5: Testes**
+## **Testar a Implementação**
 - Acesse `http://IP_DA_INSTANCIA` para verificar o site.
 
 - Pare o Nginx e aguarde 1 minuto:
-  ```bash
-  sudo systemctl stop nginx
-  ```
+    ```bash
+    sudo systemctl stop nginx
+    ```
 
 - Verifique os logs:
-  ```bash
-  tail -f /var/log/monitoramento.log
-  ```
+    ```bash
+    tail -f /var/log/monitoramento/monitoramento.log
+    tail -f /var/log/monitoramento/cron_monitor.log
+    ```
 
 - Confirme no Telegram o recebimento das notificações.
 
 - Reinicie o Nginx:
-  ```bash
-  sudo systemctl start nginx
-  ```
+    ```bash
+    sudo systemctl start nginx
+    ```
 
 Você também pode automatizar o teste criando um script. Para isso, no terminal, digite:
 
@@ -358,6 +396,12 @@ Altere as permissões do arquivo para que ele possa ser executado:
 sudo chmod +x /home/[USUÁRIO]/nginx_status.sh
 ```
 
+crie o arquivo de logs:
+~~~bash    
+sudo touch /var/log/monitoramento/nginx_status.log
+sudo chmod 666 /var/log/monitoramento/nginx_status.log
+~~~
+
 Vamos automatizar a execução:
 ```bash
 sudo crontab -e
@@ -365,13 +409,26 @@ sudo crontab -e
 
 Adicione ao final do arquivo:
 ```bash
-*/2 * * * * /home/ubuntu/nginx_status.sh
+*/1 * * * * /home/usuario/nginx_status.sh >> /var/log/monitoramento/nginx_status.log 2>&1
 ```
 
-<p>Salve o arquivo. Dessa forma, o script irá verificar, a cada 2 minutos, se o nginx está ativo. Caso ele esteja inativo, ele irá ativar. Se ele estiver ativo, ele irá desativar. Para parar a execução, edite o arquivo cron e exclua a linha referente ao script.</p>
+<p>Salve o arquivo. Dessa forma, o script irá verificar, a cada  minutos, se o nginx está ativo. Caso ele esteja inativo, ele irá ativar. Se ele estiver ativo, ele irá desativar. Para parar a execução, edite o arquivo cron e exclua a linha referente ao script.</p>
 
+### Cronologia de execução
+![LOGS.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/LOGS.png)
 
-## **Automatização com User Data**
+> Os horários no registro de log seguem o fuso horário do servidor alocado (us-east-1), então ele registra com +3h em relação ao horário local
+
+No exemplo da imagem, o `monitorar.sh` foi executado às 09:59:01, acusando que o servidor estava online. O script `nginx_status.sh`também foi executado às 09:59:01, mas imediatamente após o script `monitorar.sh`, seguindo a ordem de inserção no arquivo `crontab`. Dessa forma, ao acessar o site pelo ip público, não foi possível conectar: <br>
+![SITE OFF.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/SITE%20OFF.png)
+
+Da mesma forma, às 10:00:01, os scripts foram executados novamente e o site ficou disponível: <br>
+![SITE ON.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/SITE%20ON.png)
+
+Podemos verificar também que o envio de mensagem ao Telegram funciona corretamente, registrando a cada 2 minutos a indisponibilidade do servidor. <br>
+![TELEGRAM.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/TELEGRAM.png)
+
+# **Automatização com User Data**
 Uma outra forma de fazer as configurações da instância é a utilização de *User Data* no momento da criação da instância.
 Para isso, siga a [Etapa 1](#etapa-1-configuração-do-ambiente), mas, antes de lançar a instância, faça a seguinte configuração:
 
@@ -395,325 +452,12 @@ sudo apt update -y && sudo apt install nginx -y
 # Criação da página HTML para o servidor Nginx
 sudo cat << 'EOF' > /var/www/html/index.html
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servidor Web Monitorado</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="css/styles.css" rel="stylesheet">
-</head>
-<body class="dark-mode">
-    <!-- Navbar Fixo -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
-        <a class="navbar-brand" href="#">Servidor Web Monitorado</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#projeto">O Projeto</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="https://github.com/vinicius-emanuelds/servidor-web-monitorado" target="_blank">
-                Documentação
-                </a>
-            </li>
-            </ul>
-        </div>
-        <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="darkModeToggle" checked>
-            <label class="form-check-label text-light" for="darkModeToggle">Modo Escuro</label>
-        </div>
-        </div>
-    </nav>
-
-    <!-- Conteúdo Principal -->
-    <div class="container mt-5 pt-5">
-        <!-- Seção Projeto -->
-        <section id="projeto" class="my-5">
-        <h1>Servidor Web Monitorado</h1>
-        <p>
-            Este projeto foi desenvolvido como parte do <strong>Scholarship</strong> da Compass UOL.
-            O objetivo é configurar um servidor web na AWS, integrando monitoramento automático e notificações via Telegram.
-            Utilizando AWS, Nginx e scripts customizados, a solução demonstra uma implantação robusta e escalável para ambientes reais.
-        </p>
-        <div class="row">
-            <!-- Card Sobre Mim -->
-            <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                <h5 class="card-title">SOBRE MIM</h5>
-                <p class="card-text">Descubra minha jornada e o que me inspira no mundo do desenvolvimento.</p>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSobreMim">
-                    Acessar
-                </button>
-                </div>
-            </div>
-            </div>
-            <!-- Card Configuração Manual -->
-            <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                <h5 class="card-title">CONFIGURAÇÃO MANUAL</h5>
-                <p class="card-text">Etapas para configuração manual do ambiente na AWS.</p>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalConfigManual">
-                    Acessar
-                </button>
-                </div>
-            </div>
-            </div>
-            <!-- Card Configuração com Userdata -->
-            <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                <h5 class="card-title">CONFIGURAÇÃO COM USERDATA</h5>
-                <p class="card-text">Implantação automatizada da instância EC2 com scripts de inicialização.</p>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalConfigUserdata">
-                    Acessar
-                </button>
-                </div>
-            </div>
-            </div>
-        </div>
-        </section>
-    </div>
-
-    <!-- Modal Sobre Mim -->
-    <div class="modal fade" id="modalSobreMim" tabindex="-1" aria-labelledby="modalSobreMimLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content bg-dark text-light">
-            <div class="modal-header">
-            <h5 class="modal-title" id="modalSobreMimLabel">Sobre Mim</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
-            </div>
-            <div class="modal-body">
-            <p>
-                <strong>Olá! 👋 Meu nome é Vinicius</strong><br>
-                <em>Aspirante à Desenvolvedor Full Stack</em><br><br>
-                Graduando em Análise e Desenvolvimento de Sistemas, tenho 32 anos e estou em plena transição de carreira.
-                Encontrei na programação a maneira perfeita de unir minhas habilidades, paixões e aptidões. Foi isso que me fez deixar
-                a área da saúde e mergulhar de cabeça na tecnologia. Hoje, meu foco é no desenvolvimento full stack (front-end e back-end),
-                criando aplicações que realmente façam a diferença na vida de milhares de usuários.
-            </p>
-            <p>
-                Sou estudante na <a href="https://fatecmm.cps.sp.gov.br/" target="_blank" rel="noreferrer" class="text-info">FATEC Arthur de Azevedo</a>,
-                uma das Faculdades de Tecnologia do Estado de São Paulo, na cidade de Mogi Mirim.
-            </p>
-            <p><strong>Contato e Informações:</strong></p>
-            <ul>
-                <li>🌍 Moro em Mogi Mirim, São Paulo.</li>
-                <li>✉️ Contato: <a href="mailto:vinicius.emanuelds@gmail.com" class="text-info">vinicius.emanuelds@gmail.com</a></li>
-                <li>🚀 Atualmente, sou estagiário em Cloud &amp; DevSecOps na Compass Uol, mas continuo atuando na área da saúde.</li>
-                <li>🧠 Aprendendo DevSecOps, IaC, AWS Cloud e as linguagens C, Javascript, além de HTML e CSS.</li>
-                <li>🤝 Aberto a colaborar em projetos de impacto social.</li>
-            </ul>
-            <p><strong>Skills:</strong></p>
-            <p>
-                <a href="https://docs.microsoft.com/en-us/cpp/?view=msvc-170" target="_blank" rel="noreferrer">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" width="36" height="36" alt="C" />
-                </a>
-                <a href="https://www.linux.org/" target="_blank" rel="noreferrer">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" width="36" height="36" alt="Linux" />
-                </a>
-                <a href="https://aws.amazon.com/" target="_blank" rel="noreferrer">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" width="36" height="36" alt="AWS Cloud" />
-                </a>
-                <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noreferrer">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" width="36" height="36" alt="HTML" />
-                </a>
-                <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noreferrer">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" width="36" height="36" alt="CSS" />
-                </a>
-                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="36" height="36" alt="JavaScript" />
-                </a>
-            </p>
-            <p><strong>Estatísticas no GitHub:</strong></p>
-            <p>
-                <img src="https://github-readme-stats.vercel.app/api?username=vinicius-emanuelds&theme=transparent&bg_color=000&border_color=30A3DC&show_icons=true&icon_color=30A3DC&title_color=E94D5F&text_color=FFF" alt="GitHub Stats"><br>
-                <a href="https://github.com/vinicius-emanuelds" target="_blank" rel="noreferrer">
-                <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=vinicius-emanuelds&layout=compact&title_color=fff&text_color=f8f8f2&hide=java&bg_color=171c24" alt="Top Langs">
-                </a>
-            </p>
-            <p><strong>Redes Sociais:</strong></p>
-            <p>
-                <a href="https://github.com/vinicius-emanuelds" target="_blank" rel="noreferrer">
-                <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/github-dark.svg" width="32" height="32" alt="GitHub" />
-                </a>
-                <a href="https://www.linkedin.com/in/viniciusesilva/" target="_blank" rel="noreferrer">
-                <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/linkedin.svg" width="32" height="32" alt="LinkedIn" />
-                </a>
-            </p>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-            </div>
-        </div>
-        </div>
-    </div>
-
-    <!-- Modal Configuração Manual -->
-    <div class="modal fade" id="modalConfigManual" tabindex="-1" aria-labelledby="modalConfigManualLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content bg-dark text-light">
-            <div class="modal-header">
-            <h5 class="modal-title" id="modalConfigManualLabel">Configuração Manual</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
-            </div>
-            <div class="modal-body">
-            <p>
-                Estas são as etapas para a configuração manual do servidor web na AWS:
-            </p>
-            <ul>
-                <li><strong>Ambiente:</strong> Criação da VPC com sub-redes públicas e privadas, configuração do Security Group e lançamento da instância EC2.</li>
-                <li><strong>Instalação:</strong> Conexão via SSH, instalação do Nginx e criação de uma página HTML personalizada.</li>
-                <li><strong>Monitoramento:</strong> Implementação de scripts para monitorar o servidor e enviar notificações (via Telegram) em caso de falhas.</li>
-            </ul>
-            <p>
-                As instruções detalhadas encontram-se na documentação do projeto, disponível também no repositório.
-            </p>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-            </div>
-        </div>
-        </div>
-    </div>
-
-    <!-- Modal Configuração com Userdata -->
-    <div class="modal fade" id="modalConfigUserdata" tabindex="-1" aria-labelledby="modalConfigUserdataLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content bg-dark text-light">
-            <div class="modal-header">
-            <h5 class="modal-title" id="modalConfigUserdataLabel">Configuração com Userdata</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
-            </div>
-            <div class="modal-body">
-            <p>
-                Nesta abordagem, a instância EC2 é automaticamente configurada por meio do campo <strong>User Data</strong>. O script inicial:
-            </p>
-            <ul>
-                <li>Atualiza o sistema e instala o Nginx.</li>
-                <li>Cria uma página HTML básica para testes.</li>
-                <li>Configura scripts de monitoramento e status, com notificações via Telegram.</li>
-                <li>Automatiza tarefas com o uso do Cron.</li>
-            </ul>
-            <p>
-                Essa metodologia reduz a intervenção manual e agiliza a implantação do ambiente.
-            </p>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-            </div>
-        </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer mt-auto py-3 bg-dark">
-        <div class="container">
-        <span class="text-muted">Desenvolvido por Vinicius</span>
-        <div class="float-end">
-            <a href="https://aws.amazon.com/" class="text-light me-3">AWS</a>
-            <a href="https://nginx.org/" class="text-light me-3">Nginx</a>
-            <a href="https://webhook.site/" class="text-light me-3">WebHook</a>
-            <a href="https://telegram.org/" class="text-light">Telegram</a>
-        </div>
-        </div>
-    </footer>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <!-- Custom JS -->
-    <script src="js/scripts.js"></script>
+<html>
+<head><title>Servidor Web</title></head>
+<body>
+    <h1>Servidor Web configurado!</h1>
 </body>
 </html>
-EOF
-
-# Criação do arquivo de estilo CSS
-sudo mkdir -p /var/www/html/css
-sudo cat << 'EOF' > /var/www/html/css/styles.css
-/* styles.css */
-body.dark-mode {
-    background-color: #121212;
-    color: #ffffff;
-}
-
-body.light-mode {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-.navbar-dark .navbar-nav .nav-link {
-    color: rgba(255, 255, 255, 0.75);
-}
-
-.navbar-dark .navbar-nav .nav-link:hover {
-    color: rgba(255, 255, 255, 1);
-}
-
-.footer {
-    background-color: #343a40;
-    color: #ffffff;
-}
-
-.footer a {
-    color: #ffffff;
-    text-decoration: none;
-}
-
-.footer a:hover {
-    color: #cccccc;
-}
-
-section {
-    padding-top: 60px; /* Ajuste para o navbar fixo */
-    margin-top: -60px; /* Compensa o espaçamento do navbar */
-}
-EOF
-
-# Criação do arquivo de scripts JavaScript
-sudo mkdir -p /var/www/html/js
-sudo cat << 'EOF' > /var/www/html/js/scripts.js
-// scripts.js
-document.addEventListener('DOMContentLoaded', function() {
-    // Scroll suave para links internos
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-
-    // Toggle de modo escuro/claro
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const body = document.body;
-
-    // Verifica o estado do modo escuro no localStorage
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
-    darkModeToggle.checked = isDarkMode;
-    body.classList.toggle('dark-mode', isDarkMode);
-    body.classList.toggle('light-mode', !isDarkMode);
-
-    // Adiciona um listener para o toggle
-    darkModeToggle.addEventListener('change', function() {
-        const isDarkMode = darkModeToggle.checked;
-        body.classList.toggle('dark-mode', isDarkMode);
-        body.classList.toggle('light-mode', !isDarkMode);
-        localStorage.setItem('darkMode', isDarkMode);
-    });
-});
 EOF
 
 # Habilita e inicia o serviço do Nginx
@@ -852,7 +596,7 @@ CRON_JOB="*/1 * * * * echo \"$(date) - Executando monitorar.sh\" >> $LOGS_CRON &
 sudo touch $LOGS_CRON
 sudo chmod 666 $LOGS_CRON
 
-# === Criação do Script de Status do Nginx ===
+# Criação do Script de Status do Nginx
 STATUS_SCRIPT="/home/usuario/nginx_status.sh"
 
 sudo cat << 'EOF' > $STATUS_SCRIPT
@@ -907,6 +651,10 @@ Agora, lance a instância. Não é necessário executar mais nenhuma configuraç
 
 Agora, lance a instância. Não é necessário executar mais nenhuma configuração, apenas conecte-se à instância e acesse os arquivos de log para acompanhar a execução dos scripts.
 ---
+
+## **Considerações**
+- [Clique aqui](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/b8e673efc0ee6ce41d9ea324c414e45d1dfdb765/Comandos_Utilizados.md) para ver a lista dos comandos mais utilizados nesse projeto. Há uma breve explicação sobre o funcionamento de cada um
+- O arquivo [undo.sh](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/b8e673efc0ee6ce41d9ea324c414e45d1dfdb765/src/scripts/undo.sh) é um script que "reverte" todas as alterações feitas durante o projeto.
 
 ## **Conclusão**
 Agora você tem um **servidor web totalmente configurado e monitorado**, com opções de **automatização** para facilitar a implantação.
