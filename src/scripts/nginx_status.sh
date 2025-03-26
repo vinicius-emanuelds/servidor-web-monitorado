@@ -2,6 +2,7 @@
 
 # Verifica o status do serviço nginx
 STATUS=$(systemctl is-active nginx)
+TIME=$(date "+%d-%m-%Y %H:%M:%S")
 
 if [ "$STATUS" == "active" ]; then
     # Se o nginx está ativo, então desativa

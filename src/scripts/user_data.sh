@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# === Configuração Inicial ===
+# Configuração Inicial
 # Esse script é executado no primeiro boot da instância EC2 (Ubuntu Server)
 # Ele configura o servidor e instala o Nginx
 
@@ -334,10 +334,31 @@ EOF
 # Habilita e inicia o serviço do Nginx
 sudo systemctl enable nginx --now
 
-# === Criação do Script de Monitoramento ===
-MONITOR_SCRIPT="/home/ubuntu/monitoramento.sh"
-LOGS_DIR="/var/log/"
-LOGS_CRON="/var/log/cron_monitor.log"
+# Criação do Script de Monitoramento
+MONITOR_SCRIPT="/home/usuario/monitorar.sh"
+LOG_DIR="/var/log/monitoramento"
+mkdir -p $LOG_DIR
+
+# Definindo as variáveis de log corretamente
+LOGS="$LOG_DIR/monitorar.log"
+LOGS_CRON="$LOG_DIR/cron_monitor.log"
+LOGS_STATUS="$LOG_DIR/nginx_status.log"
+
+# Verifica se os arquivos de log existem e os cria, se necessário
+if [ ! -f "$LOGS" ]; then
+    sudo touch "$LOGS"
+    sudo chmod 666 "$LOGS"
+fi
+
+if [ ! -f "$LOGS_CRON" ]; then
+    sudo touch "$LOGS_CRON"
+    sudo chmod 666 "$LOGS_CRON"
+fi
+
+if [ ! -f "$LOGS_STATUS" ]; then
+    sudo touch "$LOGS_STATUS"
+    sudo chmod 666 "$LOGS_STATUS"
+fi
 
 sudo cat << 'EOF' > $MONITOR_SCRIPT
 #!/usr/bin/env bash
@@ -347,7 +368,8 @@ LOGS="/var/log/monitorar.log"
 BOT_TOKEN="[COLE AQUI O TOKEN GERADO PELO BOT]"
 CHAT_ID="[COLE SEU CHAT_ID]"
 
-if [ -e "$LOCKFILE" ]; then
+exec 200>"$LOCKFILE"
+if ! flock -n 200; then
     echo "O script já está em execução. Abortando."
     exit 1
 fi
@@ -357,7 +379,6 @@ trap 'rm -f "$LOCKFILE"' EXIT
 touch "$LOCKFILE"
 
 if [ ! -f "$LOGS" ]; then
-    mkdir -p $(dirname "$LOGS")
     touch "$LOGS"
 fi
 
@@ -373,61 +394,61 @@ TIME=$(date "+%d-%m-%Y %H:%M:%S")
 
 case $STATUS in
     200)
-        echo "$TIME - ✅ Site online!" | tee -a "$LOGS"
+        echo "$TIME - ✅ Site online!" >> "$LOGS"
         ;;
     400)
         MENSAGEM="$TIME - 🚨 ERRO 400: Requisição inválida!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     401)
         MENSAGEM="$TIME - 🚨 ERRO 401: Não autorizado!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     403)
         MENSAGEM="$TIME - 🚨 ERRO 403: Acesso proibido!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     404)
         MENSAGEM="$TIME - 🚨 ERRO 404: Página não encontrada!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     408)
         MENSAGEM="$TIME - 🚨 ERRO 408: Tempo limite da requisição!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     429)
         MENSAGEM="$TIME - 🚨 ERRO 429: Muitas requisições!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     500)
         MENSAGEM="$TIME - 🚨 ERRO 500: Erro interno do servidor!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     502)
         MENSAGEM="$TIME - 🚨 ERRO 502: Gateway inválido!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     503)
         MENSAGEM="$TIME - 🚨 ERRO 503: Serviço indisponível!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     504)
         MENSAGEM="$TIME - 🚨 ERRO 504: Tempo limite do gateway!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
     *)
-        MENSAGEM="$TIME - 🚨 ERRO $STATUS: Problema desconhecido!"
-        echo "$MENSAGEM" | tee -a "$LOGS"
+        MENSAGEM="$TIME - 🚨 ERRO $STATUS: Servidor offline!"
+        echo "$MENSAGEM" >> "$LOGS"
         enviar_alerta "$MENSAGEM"
         ;;
 esac
@@ -439,7 +460,7 @@ EOF
 sudo chmod +x $MONITOR_SCRIPT
 
 # Adiciona o script ao crontab para rodar a cada minuto e registra logs no arquivo dedicado
-CRON_JOB="*/1 * * * * /home/ubuntu/monitorar.sh >> $LOGS_CRON 2>&1"
+CRON_JOB="*/1 * * * * echo \"$(date) - Executando monitorar.sh\" >> $LOGS_CRON && /home/usuario/monitorar.sh >> $LOGS_CRON 2>&1"
 ( crontab -l 2>/dev/null; echo "$CRON_JOB" ) | crontab -
 
 # Criação do arquivo de log para o crontab
@@ -447,13 +468,14 @@ sudo touch $LOGS_CRON
 sudo chmod 666 $LOGS_CRON
 
 # === Criação do Script de Status do Nginx ===
-STATUS_SCRIPT="/home/ubuntu/nginx_status.sh"
+STATUS_SCRIPT="/home/usuario/nginx_status.sh"
 
 sudo cat << 'EOF' > $STATUS_SCRIPT
 #!/usr/bin/env bash
 
 # Verifica o status do serviço nginx
 STATUS=$(systemctl is-active nginx)
+TIME=$(date "+%d-%m-%Y %H:%M:%S")
 
 if [ "$STATUS" == "active" ]; then
     # Se o nginx está ativo, então desativa
@@ -469,6 +491,10 @@ EOF
 # Torna o script de status executável
 sudo chmod +x $STATUS_SCRIPT
 
-# Adiciona o script ao crontab para rodar a cada 3 minutos
-CRON_STATUS="*/3 * * * * /home/ubuntu/nginx_status.sh >> /var/log/nginx_status.log 2>&1"
+# Criação do arquivo de log para o script de status
+sudo touch $LOGS_STATUS
+sudo chmod 666 $LOGS_STATUS
+
+# Adiciona o script ao crontab para rodar a cada 2 minutos
+CRON_STATUS="*/2 * * * * /home/usuario/nginx_status.sh >> $LOGS_STATUS 2>&1"
 ( crontab -l 2>/dev/null; echo "$CRON_STATUS" ) | crontab -
