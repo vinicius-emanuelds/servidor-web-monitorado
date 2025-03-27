@@ -14,6 +14,7 @@
 | [🚨 Monitoramento](#monitoramento-e-notificações) | Scripts + Notificações no Telegram |  
 | [🤖 Automação](#automatização-com-user-data) | User Data para deploy rápido |  
 | [📚 Recursos Úteis](#recursos-úteis) | Scripts prontos e comandos-chave |
+| [✅ Conclusão](#conclusão) | Aprendizados e considerações finais |
 
 ---
 
