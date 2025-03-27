@@ -2,11 +2,11 @@
 
 ## ÍNDICE
 ### Visão Geral
-- [O que é o projeto?](#visão-geral)
+- [O que é o projeto?](#objetivos)
 
-### Recursos Necessários
-- [O que é preciso para este projeto?](#preparação)
-  - [AWS CLI](#configurando-o-aws-cli-️)
+### Recursos
+- [O que é preciso para este projeto?](#recursos-necessários)
+  - [AWS CLI](#configurando-o-aws-cli)
   - [WEBHOOK](#configurando-o-webhook-no-telegram)
 
 ### Configurando o Ambiente AWS
@@ -31,11 +31,11 @@
   - [Cronologia da execução](#cronologia-de-execução)
 
 ### Criação automatizada com *User Data*
-  - [User Data](#criação-automatizada-com-user-data)
-  - [Pontos de atenção](#️-atenção)
+  - [User Data](#automatização-com-user-data)
+  - [Pontos de atenção](#atenção)
 
-### Algumas considerações
-  - [Dicas](#considerações)
+### Recursos Úteis
+  - [Scripts, comandos e mais :)](#utilidades)
 
 ### Concluindo...
   - [O que eu aprendi até aqui?](#concluindo)
@@ -43,7 +43,7 @@
 ---
 <br>
 
-# VISÃO GERAL
+# OBJETIVOS
 Este projeto tem como objetivo configurar um servidor web na AWS com monitoramento automático. Ele inclui:
 - Criação de uma **VPC** com sub-redes públicas e privadas.
 - Configuração de uma **instância EC2** e instalação do **Nginx**.
@@ -668,7 +668,7 @@ CRON_STATUS="*/1 * * * * /home/usuario/nginx_status.sh >> $LOGS_STATUS 2>&1"
 
 Agora, lance a instância. Não é necessário executar mais nenhuma configuração, apenas conecte-se à instância e acesse os arquivos de log para acompanhar a execução dos scripts.
 
-### ⚠️ ATENÇÃO
+### ATENÇÃO
 > O user data tem um tamanho limite de 16 KB. Caso seu script ultrapasse esse limite, será necessário fazer uma "manobra" para inserirmos o user data com sucesso.
 > 
 >   1º - Crie um repositório no github com o arquivo `.sh` do user data
@@ -692,7 +692,7 @@ Agora, lance a instância. Não é necessário executar mais nenhuma configuraç
 
 ---
 
-# **Considerações**
+# **Utilidades**
 - [Clique aqui](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/b8e673efc0ee6ce41d9ea324c414e45d1dfdb765/Comandos_Utilizados.md) para ver a lista dos comandos mais utilizados nesse projeto. Há uma breve explicação sobre o funcionamento de cada um
 - O arquivo [undo.sh](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/b8e673efc0ee6ce41d9ea324c414e45d1dfdb765/src/scripts/undo.sh) é um script que "reverte" todas as alterações feitas durante o projeto.
 - Todos os scripst utilizados no projeto estão disponíveis em `/src/scripts`.
