@@ -12,7 +12,7 @@
 | [🔌 Conexão com a Instância](#conectando-se-à-instância) | Acesso SSH passo a passo |  
 | [⚙️ Servidor Web](#configuração-do-servidor-web) | Instalação do Nginx e testes |  
 | [🚨 Monitoramento](#monitoramento-e-notificações) | Scripts + Notificações no Telegram |  
-| [🤖 Automação](#automatização-com-user-data) | User Data para deploy rápido |  
+| [🤖 Automação](#automação-com-user-data) | User Data para deploy rápido |  
 | [📚 Recursos Úteis](#recursos-úteis) | Scripts prontos e comandos-chave |
 | [✅ Conclusão](#conclusão) | Aprendizados e considerações finais |
 
@@ -223,12 +223,6 @@ sudo apt-get install -y nginx
 sudo systemctl start nginx
 sudo systemctl enable nginx
 ```
-
-<br>
-
-[🔙](#índice)
-
----
 
 <br>
 
@@ -760,8 +754,14 @@ Agora, lance a instância. Não é necessário executar mais nenhuma configuraç
 - [Clique aqui](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/b8e673efc0ee6ce41d9ea324c414e45d1dfdb765/Comandos_Utilizados.md) para ver a lista dos comandos mais utilizados nesse projeto. Há uma breve explicação sobre o funcionamento de cada um
 - O arquivo [undo.sh](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/b8e673efc0ee6ce41d9ea324c414e45d1dfdb765/src/scripts/undo.sh) é um script que "reverte" todas as alterações feitas durante o projeto.
 - Todos os scripst utilizados no projeto estão disponíveis em `/src/scripts`.
-  
-[⬆️](#índice)
+
+<br>
+
+[🔙](#índice)
+
+---
+
+<br>
 
 
 # **Conclusão**
@@ -783,10 +783,16 @@ Os principais aprendizados que levo daqui são:
 
 Com esse conhecimento, posso personalizar ainda mais o projeto e adaptá-lo para diferentes cenários. Sempre há espaço para melhorias e otimizações, e a tecnologia está em constante evolução. O aprendizado não termina aqui—este é apenas mais um passo na jornada.
 
-🚀 ***Agora é hora de seguir explorando e inovando!***
+<br>
 
-✨ **Dica Final:** Explore o diretório `/scripts` no repositório para encontrar ferramentas prontas!  
+> ✨ **Dica Final:** Explore o diretório `/scripts` no repositório para encontrar ferramentas prontas!  
 🔗 [Acessar Repositório](https://github.com/vinicius-emanuelds/servidor-web-monitorado)  
 
+<br>
+
+🚀 ***Agora é hora de seguir explorando e inovando!***
+
+<br>
 ---
-Desenvolvido por Vinicius Emanuel - Março 2025
+
+##### Desenvolvido por Vinicius Emanuel - Março 2025
