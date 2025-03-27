@@ -1,47 +1,19 @@
-# **MONITORANDO UM SERVIDOR WEB**
+# **MONITORANDO UM SERVIDOR WEB: GUIA PRÁTICO** 
+*Um passo a passo visual para criação e automação de infraestrutura na AWS com notificações inteligentes.*
+
+<br>
 
 ## ÍNDICE
-### Visão Geral
-- [O que é o projeto?](#objetivos)
-
-### Recursos
-- [O que é preciso para este projeto?](#recursos-necessários)
-  - [AWS CLI](#configurando-o-aws-cli)
-  - [WEBHOOK](#configurando-o-webhook-no-telegram)
-
-### Configurando o Ambiente AWS
-  - [VPC](#criar-a-vpc)
-  - [Security Group](#criando-um-security-group)
-  - [Instância EC2](#criar-a-instância-ec2)
-
-### Conexão com a Instância
-  - [Conexão via terminal](#conectando-se-à-instância)
-
-### Servidor Web com Nginx
-  - [Instalando o Nginx](#instalar-o-e-iniciar-o-nginx)
-  - [Criando a página HTML](#criar-a-página-html)
-  - [Testando o servidor](#testar-o-servidor)
-
-### Monitorar e Notificar
-  - [Script de monitoramento](#criar-o-script-de-monitoramento)
-  - [Automatizando com o Cron](#automatizar-a-execução-com-cron)
-
-### Testes
-  - [Testando a implementação](#testar-a-implementação)
-  - [Cronologia da execução](#cronologia-de-execução)
-
-### Criação automatizada com *User Data*
-  - [User Data](#automatização-com-user-data)
-  - [Pontos de atenção](#atenção)
-
-### Recursos Úteis
-  - [Scripts, comandos e mais :)](#utilidades)
-
-### Concluindo...
-  - [O que eu aprendi até aqui?](#conclusão)
-
----
-<br>
+| Seção | Descrição |  
+|-------|-----------|
+| [🎯 Objetivos](#objetivos) | Metas do projeto |  
+| [🛠 Recursos Necessários](#recursos-necessários) | Pré-requisitos e configurações |  
+| [🌐 Configuração AWS](#configurando-o-ambiente-aws) | VPC, Security Groups e EC2 |  
+| [🔌 Conexão com a Instância](#conectando-se-à-instância) | Acesso SSH passo a passo |  
+| [⚙️ Servidor Web](#configuração-do-servidor-web) | Instalação do Nginx e testes |  
+| [🚨 Monitoramento](#monitoramento-e-notificações) | Scripts + Notificações no Telegram |  
+| [🤖 Automação](#automatização-com-user-data) | User Data para deploy rápido |  
+| [📚 Recursos Úteis](#recursos-úteis) | Scripts prontos e comandos-chave |
 
 # OBJETIVOS
 Este projeto tem como objetivo configurar um servidor web na AWS com monitoramento automático. Ele inclui:
@@ -51,6 +23,13 @@ Este projeto tem como objetivo configurar um servidor web na AWS com monitoramen
 - Implementação de um **script de monitoramento** com envio de notificação para o **Telegram**.
 - Implementação de um **script de testes** para verificar todas as configurações e cenários.
 - Opção de **automatização** com **User Data**.
+
+**Tecnologias Utilizadas:**  
+| AWS Services | Outras Ferramentas |  
+|--------------|--------------------|  
+| • EC2        | • Nginx            |  
+| • VPC        | • Shell Script     |  
+| • Security Groups | • Cron         |  
 
 [⬆️](#índice)
 
@@ -692,7 +671,7 @@ Agora, lance a instância. Não é necessário executar mais nenhuma configuraç
 
 ---
 
-# **Utilidades**
+# **Recursos Úteis**
 - [Clique aqui](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/b8e673efc0ee6ce41d9ea324c414e45d1dfdb765/Comandos_Utilizados.md) para ver a lista dos comandos mais utilizados nesse projeto. Há uma breve explicação sobre o funcionamento de cada um
 - O arquivo [undo.sh](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/b8e673efc0ee6ce41d9ea324c414e45d1dfdb765/src/scripts/undo.sh) é um script que "reverte" todas as alterações feitas durante o projeto.
 - Todos os scripst utilizados no projeto estão disponíveis em `/src/scripts`.
