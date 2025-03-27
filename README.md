@@ -15,6 +15,10 @@
 | [🤖 Automação](#automatização-com-user-data) | User Data para deploy rápido |  
 | [📚 Recursos Úteis](#recursos-úteis) | Scripts prontos e comandos-chave |
 
+---
+
+<br>
+
 # OBJETIVOS
 Este projeto tem como objetivo configurar um servidor web na AWS com monitoramento automático. Ele inclui:
 - Criação de uma **VPC** com sub-redes públicas e privadas.
@@ -27,25 +31,35 @@ Este projeto tem como objetivo configurar um servidor web na AWS com monitoramen
 **Tecnologias Utilizadas:**  
 | AWS Services | Outras Ferramentas |  
 |--------------|--------------------|  
-| • EC2        | • Nginx            |  
-| • VPC        | • Shell Script     |  
-| • Security Groups | • Cron         |  
+| EC2        | Nginx            |  
+| VPC        | Shell Script     |  
+| Security Groups | Cron         |  
 
-[⬆️](#índice)
+<br>
 
-# RECURSOS NECESSÁRIOS
-Antes de mais nada, é preciso ter uma conta ativa na AWS.
-> A [Amazon Web Services (AWS)](https://aws.amazon.com/pt/what-is-aws/) é a plataforma de nuvem mais adotada e mais abrangente do mundo, oferecendo mais de 200 serviços completos de datacenters em todo o mundo. Milhões de clientes, incluindo as startups que crescem mais rápido, as maiores empresas e os maiores órgãos governamentais, estão usando a AWS para reduzir custos, ganhar agilidade e inovar mais rapidamente.
-
-Agora, antes de iniciarmos as configurações do ambiente AWS e a criação do servidor, precisamos configurar nosso setup para que este se conecte com a instância AWS. Ainda, precisamos configurar todo o processo de webhook com o Telegram.  
-
-[⬆️](#índice)
+[⬆️ Índice](#índice)
 
 ---
-## Configurando o AWS CLI
-  Basicamente, iremos nos conectar à instância através do terminal, via linha de comando. Para isto, iremos configurar o **AWS CLI** em nosso setup. [Clique aqui](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html) para acessar a documentação oficial, com um passo a passo detalhado para a instalação e configuração.
 
- [⬆️](#índice)
+<br>
+
+# RECURSOS NECESSÁRIOS
+## Checklist Inicial
+✔️ Conta AWS ativa ([Criar conta gratuita](https://aws.amazon.com/pt/free/))
+
+> A [Amazon Web Services (AWS)](https://aws.amazon.com/pt/what-is-aws/) é a plataforma de nuvem mais adotada e mais abrangente do mundo, oferecendo mais de 200 serviços completos de datacenters em todo o mundo. Milhões de clientes, incluindo as startups que crescem mais rápido, as maiores empresas e os maiores órgãos governamentais, estão usando a AWS para reduzir custos, ganhar agilidade e inovar mais rapidamente.
+
+✔️ Terminal com acesso SSH (Linux/Mac/WSL)
+
+✔️ Conta no Telegram (para notificações)
+
+
+Agora, precisamos configurar nosso setup para que este se conecte com a instância AWS. Ainda, precisamos configurar todo o processo de webhook com o Telegram.  
+
+<br>
+
+## Configurando o AWS CLI
+Basicamente, iremos nos conectar à instância através do terminal, via linha de comando. Para isto, iremos configurar o **AWS CLI** em nosso setup. [Clique aqui](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html) para acessar a documentação oficial, com um passo a passo detalhado para a instalação e configuração.
 
 <br>
 
@@ -71,12 +85,26 @@ Para enviar mensagens através do webhook, precisamos "iniciar" nosso bot para q
 1. No Telegram, procure por `@MonitoramentoBot` (use o nome que você deu ao bot.
 2. Inicie uma conversa enviando o comando `/start.
 
-[⬆️](#índice)
+<br>
+
+[⬆️ Índice](#índice)
 
 ---
 
+<br>
 
 # **CONFIGURANDO O AMBIENTE AWS**
+### **Arquitetura Proposta**  
+
+```mermaid
+    graph TD
+    A[VPC] --> B[Subnet Pública]
+    A --> C[Subnet Privada]
+    B --> D[EC2 com Nginx]
+    D --> E[Internet Gateway]
+    E --> F[Security Group]
+    F -->|Regras| G[HTTP/HTTPS/SSH]
+```
 
 ## **Criar a VPC**
 Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com um internet gateway conectado à uma das sub-redes públicas.
