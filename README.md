@@ -9,6 +9,39 @@
   - [AWS CLI](#configurando-o-aws-cli-️)
   - [WEBHOOK](#configurando-o-webhook-no-telegram)
 
+### Configurando o Ambiente AWS
+  - [VPC](#criar-a-vpc)
+  - [Security Group](#criando-um-security-group)
+  - [Instância EC2](#criar-a-instância-ec2)
+
+### Conexão com a Instância
+  - [Conexão via terminal](#conectando-se-à-instância)
+
+### Servidor Web com Nginx
+  - [Instalando o Nginx](#instalar-o-e-iniciar-o-nginx)
+  - [Criando a página HTML](#criar-a-página-html)
+  - [Testando o servidor](#testar-o-servidor)
+
+### Monitorar e Notificar
+  - [Script de monitoramento](#criar-o-script-de-monitoramento)
+  - [Automatizando com o Cron](#automatizar-a-execução-com-cron)
+
+### Testes
+  - [Testando a implementação](#testar-a-implementação)
+  - [Cronologia da execução](#cronologia-de-execução)
+
+### Criação automatizada com *User Data*
+  - [User Data](#criação-automatizada-com-user-data)
+  - [Pontos de atenção](#️-atenção)
+
+### Algumas considerações
+  - [Dicas](#considerações)
+
+### Concluindo...
+  - [O que eu aprendi até aqui?](#concluindo)
+
+---
+<br>
 
 # VISÃO GERAL
 Este projeto tem como objetivo configurar um servidor web na AWS com monitoramento automático. Ele inclui:
@@ -64,7 +97,7 @@ Para enviar mensagens através do webhook, precisamos "iniciar" nosso bot para q
 ---
 
 
-# **Etapa 1: Configuração do Ambiente**
+# **CONFIGURANDO O AMBIENTE AWS**
 
 ## **Criar a VPC**
 Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com um internet gateway conectado à uma das sub-redes públicas.
@@ -132,7 +165,7 @@ chmod 400 [SUA_CHAVE].pem
 
 <br>
 
-# **Etapa 2: Conectando-se à Instância**
+# **CONECTANDO-SE À INSTÂNCIA**
 Agora é o momento de testar se todas as configurações foram aplicadas corretamente.
 
 - No console AWS, ao selecionar sua instância, todas as informações sobre ela são exibidas <br>
@@ -155,7 +188,7 @@ ssh -i /local/da/chave/privada/[SUA_CHAVE].pem [USUÁRIO_EC2]@ip_publico
 [⬆️](#índice)
 <br>
 
-# **Etapa 3: Configuração do Servidor Web**
+# **CONFIGURAÇÃO DO SERVIDOR WEB**
 ## **Instalar o e iniciar o Nginx**
 No seu terminal, digite os seguintes comandos:
 ```bash
@@ -207,7 +240,7 @@ Se tudo estiver configurado corretamente, você deverá visualizar a página. <b
 
 <br>
 
-# **Etapa 4: Monitoramento e Notificações**
+# **MONITORAMENTO E NOTIFICAÇÕES**
 ## **Criar o Script de Monitoramento**
 Agora, vamos configurar o monitoramento do servidor através de um shell script.
 
@@ -345,7 +378,7 @@ Salve o arquivo. Dessa forma, o script irá verificar, a cada minuto, se o servi
 <br>
 
 
-# **Etapa 5: Testes**
+# **TESTES**
 ## **Testar a Implementação**
 - Acesse `http://IP_DA_INSTANCIA` para verificar o site.
 
@@ -428,14 +461,17 @@ Da mesma forma, às 10:00:01, os scripts foram executados novamente e o site fic
 Podemos verificar também que o envio de mensagem ao Telegram funciona corretamente, registrando a cada 2 minutos a indisponibilidade do servidor. <br>
 ![TELEGRAM.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/TELEGRAM.png)
 
+[⬆️](#índice)
+
+
 # **Automatização com User Data**
 Uma outra forma de fazer as configurações da instância é a utilização de *User Data* no momento da criação da instância.
 Para isso, siga a [Etapa 1](#etapa-1-configuração-do-ambiente), mas, antes de lançar a instância, faça a seguinte configuração:
 
-- Expanda as configurações avançadas:
+- Expanda as configurações avançadas:<br>
 ![5 USERDATA.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/5%20USERDATA.png)
 
-- Role até o final da pagina e encontre o campo *User Data*:
+- Role até o final da pagina e encontre o campo *User Data*:<br>
 ![5.1 USERDATA.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/5.1%20USERDATA.png)
 
 - Adicione este script no campo **"User Data"** ao criar a EC2:
@@ -589,7 +625,7 @@ EOF
 sudo chmod +x $MONITOR_SCRIPT
 
 # Adiciona o script ao crontab para rodar a cada minuto e registra logs no arquivo dedicado
-CRON_JOB="*/1 * * * * echo \"$(date) - Executando monitorar.sh\" >> $LOGS_CRON && /home/usuario/monitorar.sh >> $LOGS_CRON 2>&1"
+CRON_JOB="*/1 * * * * echo \"\$(date '+\%d-\%m-\%Y \%H:\%M:\%S') - Executando monitorar.sh\" >> $LOGS_CRON && /home/usuario/monitorar.sh >> $LOGS_CRON 2>&1"
 ( crontab -l 2>/dev/null; echo "$CRON_JOB" ) | crontab -
 
 # Criação do arquivo de log para o crontab
@@ -624,8 +660,8 @@ sudo chmod +x $STATUS_SCRIPT
 sudo touch $LOGS_STATUS
 sudo chmod 666 $LOGS_STATUS
 
-# Adiciona o script ao crontab para rodar a cada 2 minutos
-CRON_STATUS="*/2 * * * * /home/usuario/nginx_status.sh >> $LOGS_STATUS 2>&1"
+# Adiciona o script ao crontab para rodar a cada 1 minutos
+CRON_STATUS="*/1 * * * * /home/usuario/nginx_status.sh >> $LOGS_STATUS 2>&1"
 ( crontab -l 2>/dev/null; echo "$CRON_STATUS" ) | crontab -
 
 ```
@@ -634,33 +670,52 @@ Agora, lance a instância. Não é necessário executar mais nenhuma configuraç
 
 ### ⚠️ ATENÇÃO
 > O user data tem um tamanho limite de 16 KB. Caso seu script ultrapasse esse limite, será necessário fazer uma "manobra" para inserirmos o user data com sucesso.
+> 
 >   1º - Crie um repositório no github com o arquivo `.sh` do user data
->   2º - Para este projeto, é recomendável que o repositório seja privado (para evitar o vazamento de tokens e chat_id), então será necessário gerar um token de acesso:
->       - [Clique aqui](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) para acessar a documentação sobre como gerar o token. Lembre de garantir acesso total para leitura e escrita.
+> 
+>   2º - Para este projeto, é recomendável que o repositório seja privado (para evitar o vazamento de tokens e chat_id), então será necessário gerar um token de acesso. [Clique aqui](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) para acessar a documentação sobre como gerar o token. Lembre de garantir acesso total para leitura e escrita.
+> 
 >   3º - Agora, insira o script abaixo no campo user data, substuindo suas informações
+> ~~~bash
+> #!/bin/bash
+>   apt-get update -y
+>  apt-get install -y git
+>  cd /tmp
+>  git clone https://[SEU_TOKEN]@github.com/caminho_do/seu_repositorio.git
+>  cd [repositório]
+>   bash user_data.sh
+> ~~~
+>
+> Agora, lance a instância.
 
-~~~bash
-#!/bin/bash
-   apt-get update -y
-   apt-get install -y git
-   cd /tmp
-   git clone https://[SEU_TOKEN]@github.com/caminho_do/seu_repositorio.git
-   cd [repositório]
-   bash user_data.sh
-~~~
+[⬆️](#índice)
 
-Agora, lance a instância. Não é necessário executar mais nenhuma configuração, apenas conecte-se à instância e acesse os arquivos de log para acompanhar a execução dos scripts.
 ---
 
-## **Considerações**
+# **Considerações**
 - [Clique aqui](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/b8e673efc0ee6ce41d9ea324c414e45d1dfdb765/Comandos_Utilizados.md) para ver a lista dos comandos mais utilizados nesse projeto. Há uma breve explicação sobre o funcionamento de cada um
 - O arquivo [undo.sh](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/b8e673efc0ee6ce41d9ea324c414e45d1dfdb765/src/scripts/undo.sh) é um script que "reverte" todas as alterações feitas durante o projeto.
+- Todos os scripst utilizados no projeto estão disponíveis em `/src/scripts`.
+
+
 
 ## **Conclusão**
-Agora você tem um **servidor web totalmente configurado e monitorado**, com opções de **automatização** para facilitar a implantação.
+Ao longo deste projeto, pude experimentar na prática todo o processo de configuração, monitoramento e automação de um servidor web na AWS. Desde a criação da infraestrutura até a implementação de notificações automáticas, cada etapa foi um aprendizado valioso sobre como tornar a gestão de servidores mais eficiente e confiável.
 
-**Diferenciais deste projeto:**<br>
-✔ Configuração manual e automatizada com **User Data**.<br>
-✔ Monitoramento inteligente com **notificações automáticas**.
+Mais do que simplesmente montar um ambiente funcional, essa experiência me permitiu aprofundar conhecimentos em redes, segurança, automação e monitoramento. A integração com o Telegram para alertas em tempo real trouxe um nível extra de controle, garantindo que qualquer problema no servidor seja identificado imediatamente.
 
-**Agora é sua vez de testar e personalizar!**
+Os principais aprendizados que levo daqui são:
+
+✅ Como estruturar corretamente uma infraestrutura na AWS, configurando VPCs, sub-redes e instâncias EC2.
+
+✅ A importância da automação com User Data, reduzindo configurações manuais e otimizando o tempo.
+
+✅ A implementação de um sistema de monitoramento ativo, garantindo maior disponibilidade do serviço.
+
+✅ O uso do cron para programar execuções periódicas e automatizar verificações.
+
+✅ Boas práticas de segurança, configurando acessos e permissões corretamente.
+
+Com3 esse conhecimento, posso personalizar ainda mais o projeto e adaptá-lo para diferentes cenários. Sempre há espaço para melhorias e otimizações, e a tecnologia está em constante evolução. O aprendizado não termina aqui—este é apenas mais um passo na jornada.
+
+🚀 ***Agora é hora de seguir explorando e inovando!***
