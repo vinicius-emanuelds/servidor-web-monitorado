@@ -37,7 +37,7 @@ Este projeto tem como objetivo configurar um servidor web na AWS com monitoramen
 
 <br>
 
-[⬆️ Índice](#índice)
+[🔙](#índice)
 
 ---
 
@@ -53,7 +53,7 @@ Este projeto tem como objetivo configurar um servidor web na AWS com monitoramen
 
 ✔️ Conta no Telegram (para notificações)
 
-
+<br>
 Agora, precisamos configurar nosso setup para que este se conecte com a instância AWS. Ainda, precisamos configurar todo o processo de webhook com o Telegram.  
 
 <br>
@@ -87,7 +87,7 @@ Para enviar mensagens através do webhook, precisamos "iniciar" nosso bot para q
 
 <br>
 
-[⬆️ Índice](#índice)
+[🔙](#índice)
 
 ---
 
@@ -106,69 +106,80 @@ Para enviar mensagens através do webhook, precisamos "iniciar" nosso bot para q
     F -->|Regras| G[HTTP/HTTPS/SSH]
 ```
 
+<br>
+
 ## **Criar a VPC**
 Agora vamos criar uma VPC na AWS com 4 sub-redes (2 privadas e 2 públicas), com um internet gateway conectado à uma das sub-redes públicas.
 
-- Após logar no console AWS, selecione VPC (ou digite na barra de busca).
+- Após logar no console AWS, selecione VPC (ou digite na barra de busca).<br>
 ![1 Dashboard.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/1%20Dashboard.png)
 
-- Clique em *Create VPC*
+- Clique em *Create VPC*<br>
 ![2 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2%20VPC.png)
 
 - Aplique as configurações abaixo e clique em *Create VPC*<br>
-![2.1 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.1%20VPC.png)
+![2.1 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.1%20VPC.png)<br>
 ![2.2 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.2%20VPC.png)
-- Se as configurações estiverem corretas, o fluxo ser similar à esse:
-![<2.3 VPC.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.3%20VPC.png)
 
-[⬆️](#índice)
+- Se as configurações estiverem corretas, o fluxo ser similar à esse:<br>
+![2.3 VPC.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/2.3%20VPC.png)
+
+
 <br>
 
 ## **Criando um Security Group**
-- No dashboard, clique em EC2. Depois, na seção à esquerda, selecione *Secuity Group*
+- No dashboard, clique em EC2. Depois, na seção à esquerda, selecione *Secuity Group*<br>
 ![<3 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3%20SG.png)
 
-- Clique em *Create Security Group*
+- Clique em *Create Security Group*<br>
 ![<3.1 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3.1%20SG.png)
 
-- Aplique as configurações abaixo e clique em *Create Security Group*
-![<3.2 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3.2%20SG.png)
+- Aplique as configurações abaixo e clique em *Create Security Group*<br>
+![<3.2 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3.2%20SG.png)<br>
 ![<3.3 SG.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/3.3%20SG.png)
-
-[⬆️](#índice)
 
 <br>
 
 ## **Criar a instância EC2**
-- Em EC2, na seção à esquerda, clique em *Instances* e depois em "Launch Instances"
-![<4 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4%20EC2.png)
+- Em EC2, na seção à esquerda, clique em *Instances* e depois em "Launch Instances"<br>
+![<4 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4%20EC2.png)<br>
 ![<4.0 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.0%20EC2.png)
 
-- Aplique as configurações abaixo:
-![<4.1 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.1%20EC2.png)
+- Aplique as configurações abaixo:<br>
+![<4.1 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.1%20EC2.png)<br>
 ![<4.2 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.2%20EC2.png)
 
 - Para criar um "Key Pair", faça:<br>
 ![<4.3 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.3%20EC2.png)
+
+<br>
 
 Após a criação, a chave será baixada automaticamente para sua máquina. É importante mantê-la disponível no momento da conexão com a instância. Se estiver usando o windows, com wsl, utilize o comando abaixo para copiar para a máquina Linux. Se já estiver utilizando Linux, pule esta etapa.
 ```cmd
 scp \caminho_para_chave\[SUA_CHAVE].pem [USUÁRIO]@[IP_LINUX]:/home/[USUÁRIO]
 ```
 
+<br>
+
 - Já no linux, aplique as permissões para a chave:
 ```bash
 chmod 400 [SUA_CHAVE].pem
 ```
 
+<br>
+
 - Continue as configurações:<br>
-![<4.4 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.4%20EC2.png)
+![<4.4 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.4%20EC2.png)<br>
 ![<4.5 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.5%20EC2.png)
 
 - Revise as configurações e clique em *Launch Instance* <br>
 ![<4.6 EC2.png>](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/316fdcc66d7d88ac2ee91acc2ac84cabaf2f06fe/src/assets/to_README/4.6%20EC2.png)
 
-[⬆️](#índice)
+<br>
+
+[🔙](#índice)
+
+---
 
 <br>
 
@@ -181,6 +192,8 @@ Agora é o momento de testar se todas as configurações foram aplicadas correta
 - Verififique se o status da instância aparece como ***running*** <br>
 ![STATUS(2).PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/STATUS%20(2).png)
 
+<br>
+
 - Agora, no seu terminal linux, utilize o comando abaixo:
 ```bash
 ssh -i /local/da/chave/privada/[SUA_CHAVE].pem [USUÁRIO_EC2]@ip_publico
@@ -192,7 +205,12 @@ ssh -i /local/da/chave/privada/[SUA_CHAVE].pem [USUÁRIO_EC2]@ip_publico
 
 - Será solicitado a confirmação de acesso. Digite `yes` e aperte enter. Se tudo ocorrer como esperado, você estará conectado à instância EC2
 
-[⬆️](#índice)
+<br>
+
+[🔙](#índice)
+
+---
+
 <br>
 
 # **CONFIGURAÇÃO DO SERVIDOR WEB**
@@ -204,7 +222,12 @@ sudo apt-get install -y nginx
 sudo systemctl start nginx
 sudo systemctl enable nginx
 ```
-[⬆️](#índice)
+
+<br>
+
+[🔙](#índice)
+
+---
 
 <br>
 
@@ -214,6 +237,8 @@ Agora, vamos usar o editor Nano para criar a página HTML exibida ao acessar o s
 ```bash
 sudo nano /var/www/html/index.html
 ```
+
+<br>
 
 Adicione o conteúdo de sua página ao editor. Abaixo, temos um exemplo de página básica.
 
@@ -230,20 +255,28 @@ Adicione o conteúdo de sua página ao editor. Abaixo, temos um exemplo de pági
 ```
 Para salvar as alterações do Nano, digte `Ctrl + x`, `y` e aperte `enter`.
 
-[⬆️](#índice)
+<br>
+
+[🔙](#índice)
+
+---
 
 <br>
 
 ## **Testar o Servidor**
 Agora, acesse um navegador e coloque o IP público da instância.
 
-> O IP público da instância pode ser encontrado no console ASW: <br
+> O IP público da instância pode ser encontrado no console ASW: <br>
 > ![IP PUBLICO.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/IP%20PUBLICO.png)
 
 Se tudo estiver configurado corretamente, você deverá visualizar a página. <br>
-![TESTE.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/TESTE.png)
+![TESTE.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/TE
 
-[⬆️](#índice)
+<br>
+
+[🔙](#índice)
+
+---
 
 <br>
 
@@ -357,9 +390,10 @@ Agora, iremos alterar as permissões do arquivo para que ele possa ser executado
 ```bash
 sudo chmod +x /home/[USUÁRIO]/monitoramento.sh
 ```
-[⬆️](#índice)
+
 
 <br>
+
 
 ## **Automatizar a Execução com Cron**
 Agora vamos automatizar a execução do script com o Cron.<br>
@@ -379,11 +413,16 @@ Escolha uma das 4 opções de editor. Depois, adicione ao final do arquivo:
 ```bash
 */1 * * * * echo \"\$(date '+\%d-\%m-\%Y \%H:\%M:\%S') - Executando monitorar.sh\" >> /var/log/monitoramento/cron_monitor.log && /home/usuario/monitorar.sh >> /var/log/monitoramento/cron_monitor.log 2>&1"
 ```
+<br>
 Salve o arquivo. Dessa forma, o script irá verificar, a cada minuto, se o servidor está online. Caso ele esteja offline, uma notificação será encaminhado ao Telegram.
 
-[⬆️](#índice)
 <br>
 
+[🔙](#índice)
+
+---
+
+<br>
 
 # **TESTES**
 ## **Testar a Implementação**
@@ -406,6 +445,8 @@ Salve o arquivo. Dessa forma, o script irá verificar, a cada minuto, se o servi
     ```bash
     sudo systemctl start nginx
     ```
+
+<br>
 
 Você também pode automatizar o teste criando um script. Para isso, no terminal, digite:
 
@@ -452,6 +493,8 @@ Adicione ao final do arquivo:
 */1 * * * * /home/usuario/nginx_status.sh >> /var/log/monitoramento/nginx_status.log 2>&1
 ```
 
+<br>
+
 <p>Salve o arquivo. Dessa forma, o script irá verificar, a cada  minutos, se o nginx está ativo. Caso ele esteja inativo, ele irá ativar. Se ele estiver ativo, ele irá desativar. Para parar a execução, edite o arquivo cron e exclua a linha referente ao script.</p>
 
 ### Cronologia de execução
@@ -459,7 +502,7 @@ Adicione ao final do arquivo:
 
 > Os horários no registro de log seguem o fuso horário do servidor alocado (us-east-1), então ele registra com +3h em relação ao horário local
 
-No exemplo da imagem, o `monitorar.sh` foi executado às 09:59:01, acusando que o servidor estava online. O script `nginx_status.sh`também foi executado às 09:59:01, mas imediatamente após o script `monitorar.sh`, seguindo a ordem de inserção no arquivo `crontab`. Dessa forma, ao acessar o site pelo ip público, não foi possível conectar: <br>
+No exemplo da imagem, `monitorar.sh` foi executado às 09:59:01, acusando que o servidor estava online. O script `nginx_status.sh` também foi executado às 09:59:01, mas imediatamente após o script `monitorar.sh`, seguindo a ordem de inserção no arquivo `crontab`. Dessa forma, ao acessar o site pelo ip público, não foi possível conectar: <br>
 ![SITE OFF.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/SITE%20OFF.png)
 
 Da mesma forma, às 10:00:01, os scripts foram executados novamente e o site ficou disponível: <br>
@@ -468,10 +511,15 @@ Da mesma forma, às 10:00:01, os scripts foram executados novamente e o site fic
 Podemos verificar também que o envio de mensagem ao Telegram funciona corretamente, registrando a cada 2 minutos a indisponibilidade do servidor. <br>
 ![TELEGRAM.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/TELEGRAM.png)
 
-[⬆️](#índice)
+<br>
 
+[🔙](#índice)
 
-# **Automatização com User Data**
+---
+
+<br>
+
+# **Automação com User Data**
 Uma outra forma de fazer as configurações da instância é a utilização de *User Data* no momento da criação da instância.
 Para isso, siga a [Etapa 1](#etapa-1-configuração-do-ambiente), mas, antes de lançar a instância, faça a seguinte configuração:
 
@@ -673,9 +721,13 @@ CRON_STATUS="*/1 * * * * /home/usuario/nginx_status.sh >> $LOGS_STATUS 2>&1"
 
 ```
 
+<br>
+
 Agora, lance a instância. Não é necessário executar mais nenhuma configuração, apenas conecte-se à instância e acesse os arquivos de log para acompanhar a execução dos scripts.
 
-### ATENÇÃO
+<br>
+
+> ### ⚠️ ATENÇÃO
 > O user data tem um tamanho limite de 16 KB. Caso seu script ultrapasse esse limite, será necessário fazer uma "manobra" para inserirmos o user data com sucesso.
 > 
 >   1º - Crie um repositório no github com o arquivo `.sh` do user data
@@ -695,9 +747,13 @@ Agora, lance a instância. Não é necessário executar mais nenhuma configuraç
 >
 > Agora, lance a instância.
 
-[⬆️](#índice)
+<br>
+
+[🔙](#índice)
 
 ---
+
+<br>
 
 # **Recursos Úteis**
 - [Clique aqui](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/b8e673efc0ee6ce41d9ea324c414e45d1dfdb765/Comandos_Utilizados.md) para ver a lista dos comandos mais utilizados nesse projeto. Há uma breve explicação sobre o funcionamento de cada um
@@ -724,6 +780,12 @@ Os principais aprendizados que levo daqui são:
 
 ✅ Boas práticas de segurança, configurando acessos e permissões corretamente.
 
-Com3 esse conhecimento, posso personalizar ainda mais o projeto e adaptá-lo para diferentes cenários. Sempre há espaço para melhorias e otimizações, e a tecnologia está em constante evolução. O aprendizado não termina aqui—este é apenas mais um passo na jornada.
+Com esse conhecimento, posso personalizar ainda mais o projeto e adaptá-lo para diferentes cenários. Sempre há espaço para melhorias e otimizações, e a tecnologia está em constante evolução. O aprendizado não termina aqui—este é apenas mais um passo na jornada.
 
 🚀 ***Agora é hora de seguir explorando e inovando!***
+
+✨ **Dica Final:** Explore o diretório `/scripts` no repositório para encontrar ferramentas prontas!  
+🔗 [Acessar Repositório](https://github.com/vinicius-emanuelds/servidor-web-monitorado)  
+
+---
+Desenvolvido por Vinicius Emanuel - Março 2025
