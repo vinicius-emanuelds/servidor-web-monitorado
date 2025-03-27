@@ -699,7 +699,7 @@ Agora, lance a instância. Não é necessário executar mais nenhuma configuraç
 
 
 
-## **Conclusão**
+# **Conclusão**
 Ao longo deste projeto, pude experimentar na prática todo o processo de configuração, monitoramento e automação de um servidor web na AWS. Desde a criação da infraestrutura até a implementação de notificações automáticas, cada etapa foi um aprendizado valioso sobre como tornar a gestão de servidores mais eficiente e confiável.
 
 Mais do que simplesmente montar um ambiente funcional, essa experiência me permitiu aprofundar conhecimentos em redes, segurança, automação e monitoramento. A integração com o Telegram para alertas em tempo real trouxe um nível extra de controle, garantindo que qualquer problema no servidor seja identificado imediatamente.
