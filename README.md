@@ -265,7 +265,7 @@ Agora, acesse um navegador e coloque o IP público da instância.
 > ![IP PUBLICO.png](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/IP%20PUBLICO.png)
 
 Se tudo estiver configurado corretamente, você deverá visualizar a página. <br>
-![TESTE.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/TE
+![TESTE.PNG](https://github.com/vinicius-emanuelds/servidor-web-monitorado/blob/main/src/assets/to_README/TESTE.PNG)
 
 <br>
 
